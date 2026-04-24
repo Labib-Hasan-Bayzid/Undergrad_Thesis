@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Save Payments Information</title>
+  <link rel="stylesheet" href="css/card_details.css" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">💳</div>
+        <div class="brand-text">
+          <h1>Save Payment Details</h1>
+          <p>Add card info securely</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <a class="btn btn-ghost" href="marketplace.html">Marketplace</a>
+        <a class="btn btn-ghost" href="workshops.html">Workshops</a>
+        <a class="btn btn-ghost" href="user_buying_history.html">Buying History</a>
+        <a class="btn btn-danger" href="login.html" id="btnLogout">Logout</a>
+      </div>
+    </header>
+
+    <div class="floating-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <section class="grid-wrap">
+      <section class="glass panel form-panel">
+        <div class="section-head">
+          <div>
+            <h2>Add Card</h2>
+            <p class="muted">Use test/demo card values only.</p>
+          </div>
+        </div>
+
+        <form id="cardForm" novalidate>
+          <div class="form-grid">
+            <div class="field span-2">
+              <label for="cardLabel">Card Type</label>
+              <input id="cardLabel" type="text" placeholder="e.g. Personal Visa / Salary Card" />
+            </div>
+
+            <div class="field span-2">
+              <label for="cardHolder">Card Holder Name</label>
+              <input id="cardHolder" type="text" placeholder="Full name on card" />
+            </div>
+
+            <div class="field span-2">
+              <label for="cardNumber">Card Number</label>
+              <input id="cardNumber" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" />
+            </div>
+
+            <div class="field">
+              <label for="expMonth">Expiry Month</label>
+              <select id="expMonth">
+                <option value="">Month</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="expYear">Expiry Year</label>
+              <input id="expYear" type="text" inputmode="numeric" maxlength="4" placeholder="2029" />
+            </div>
+
+            <div class="field">
+              <label for="cvv">CVV</label>
+              <input id="cvv" type="password" inputmode="numeric" maxlength="4" placeholder="123" />
+            </div>
+
+            <div class="field span-2">
+              <label for="billingAddress">Billing Address</label>
+              <input id="billingAddress" type="text" placeholder="Optional address" />
+            </div>
+          </div>
+
+          
+
+          <div class="actions">
+            <button class="btn btn-ghost" type="button" id="btnClearForm">Clear</button>
+            <button class="btn btn-primary" type="submit" id="btnSaveCard">Save Card</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="glass panel list-panel">
+        <div class="section-head">
+          <div>
+            <h2>Saved Cards</h2>
+            <p class="muted" id="savedCount">0 cards</p>
+          </div>
+          <button class="btn btn-ghost" type="button" id="btnRefreshCards">Refresh</button>
+        </div>
+
+        <div id="cardsEmpty" class="empty-state">
+          <h3>No saved cards yet</h3>
+          <p>Add a card to see it here.</p>
+        </div>
+
+        <div id="cardsList" class="cards-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="js/card_details.js"></script>
+</body>
+</html>

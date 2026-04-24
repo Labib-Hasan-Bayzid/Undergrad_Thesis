@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin • Records</title>
+
+  <link rel="stylesheet" href="css/admin_records.css" />
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <!-- Topbar -->
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" focusable="false">
+            <defs>
+              <linearGradient id="ar1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="rgba(124,92,255,0.95)"/>
+                <stop offset="1" stop-color="rgba(34,211,238,0.95)"/>
+              </linearGradient>
+            </defs>
+            <path fill="url(#ar1)" d="M18 8h20l8 8v40H18V8z"/>
+            <path fill="rgba(255,255,255,0.85)" d="M38 8v10h10"/>
+            <path fill="rgba(255,255,255,0.85)" d="M24 26h22v4H24v-4zm0 10h22v4H24v-4zm0 10h16v4H24v-4z"/>
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <h1>Records</h1>
+          <p>Subscriptions • Vehicle sales • Workshop bookings</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <a class="btn btn-ghost" href="admin_dashboard.html">Dashboard</a>
+        <a class="btn btn-ghost" href="admin_sellers.html">Sellers</a>
+        <a class="btn btn-ghost" href="marketplace.html">Marketplace</a>
+        <a class="btn btn-ghost" href="workshops.html">Workshops</a>
+        <a class="btn btn-ghost" href="http://localhost:5000\index.html">Auto Vault</a>
+        <a class="btn btn-danger" href="login.html" id="btnLogout">Logout</a>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <section class="tabs glass" aria-label="Admin Records Tabs">
+      <button class="tab is-active" id="tabSubscriptions" type="button">Subscriptions</button>
+      <button class="tab" id="tabVehicleSales" type="button">Vehicle Sales</button>
+      <button class="tab" id="tabBookings" type="button">Workshop Bookings</button>
+    </section>
+
+    <!-- Controls -->
+    <section class="controls glass">
+      <div class="search">
+        <span class="icon" aria-hidden="true">⌕</span>
+        <input id="searchInput" type="text" placeholder="Search by user, seller, workshop, plan, status..." autocomplete="off"/>
+        <button class="btn btn-ghost btn-mini" id="btnClearSearch" type="button">Clear</button>
+      </div>
+
+      <div class="filters">
+        <div class="field">
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="expired">Expired</option>
+            <option value="sold">Sold</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sortBy">Sort</label>
+          <select id="sortBy">
+            <option value="recent">Recent</option>
+            <option value="nameAsc">Name: A → Z</option>
+            <option value="nameDesc">Name: Z → A</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" id="btnApply" type="button">Apply</button>
+      </div>
+    </section>
+
+    <!-- KPIs -->
+    <section class="kpis">
+      <article class="kpi glass">
+        <p class="kpi-label" id="kpiLabel1">Total</p>
+        <p class="kpi-value" id="kpiValue1">0</p>
+        <p class="kpi-sub" id="kpiSub1">—</p>
+      </article>
+      <article class="kpi glass">
+        <p class="kpi-label" id="kpiLabel2">Status</p>
+        <p class="kpi-value" id="kpiValue2">0</p>
+        <p class="kpi-sub" id="kpiSub2">—</p>
+      </article>
+      <article class="kpi glass">
+        <p class="kpi-label" id="kpiLabel3">Recorded Payments</p>
+        <p class="kpi-value" id="kpiValue3">0</p>
+        <p class="kpi-sub" id="kpiSub3">—</p>
+      </article>
+    </section>
+
+    <!-- SUBSCRIPTIONS -->
+    <section class="panel glass" id="subscriptions">
+      <div class="panel-head">
+        <div>
+          <h2>Subscriptions</h2>
+          <p class="muted">Auto Vault subscription list</p>
+        </div>
+        <div class="panel-actions">
+          <button class="btn btn-ghost btn-mini" id="btnRefreshSubs" type="button">Refresh</button>
+        </div>
+      </div>
+
+      <div class="table">
+        <div class="trow thead">
+          <div class="tcell">User</div>
+          <div class="tcell">Plan</div>
+          <div class="tcell">Status</div>
+          <div class="tcell">Ends</div>
+        </div>
+        <div id="subsRows"></div>
+      </div>
+
+      <div class="empty glass-soft" id="subsEmpty" hidden>
+        <h3>No subscriptions found</h3>
+        <p>Try clearing filters.</p>
+      </div>
+    </section>
+
+    <!-- VEHICLE SALES -->
+    <section class="panel glass" id="vehicle_sales" hidden>
+      <div class="panel-head">
+        <div>
+          <h2>Vehicle Sales</h2>
+          <p class="muted">Listing status and buyer details</p>
+        </div>
+        <div class="panel-actions">
+          <button class="btn btn-ghost btn-mini" id="btnRefreshSales" type="button">Refresh</button>
+        </div>
+      </div>
+
+      <div class="table">
+        <div class="trow thead">
+          <div class="tcell">Listing</div>
+          <div class="tcell">Seller</div>
+          <div class="tcell">Buyer</div>
+          <div class="tcell">Status</div>
+        </div>
+        <div id="salesRows"></div>
+      </div>
+
+      <div class="empty glass-soft" id="salesEmpty" hidden>
+        <h3>No vehicle sales found</h3>
+        <p>Try clearing filters.</p>
+      </div>
+    </section>
+
+    <!-- BOOKINGS -->
+    <section class="panel glass" id="bookings" hidden>
+      <div class="panel-head">
+        <div>
+          <h2>Workshop Bookings</h2>
+          <p class="muted">Bookings with status</p>
+        </div>
+        <div class="panel-actions">
+          <button class="btn btn-ghost btn-mini" id="btnRefreshBookings" type="button">Refresh</button>
+        </div>
+      </div>
+
+      <div class="table">
+        <div class="trow thead">
+          <div class="tcell">Service / Item</div>
+          <div class="tcell">Workshop</div>
+          <div class="tcell">User</div>
+          <div class="tcell">Status</div>
+        </div>
+        <div id="bookingRows"></div>
+      </div>
+
+      <div class="empty glass-soft" id="bookingsEmpty" hidden>
+        <h3>No bookings found</h3>
+        <p>Try clearing filters.</p>
+      </div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  </main>
+
+  <script src="js/admin_records.js" defer></script>
+</body>
+</html>

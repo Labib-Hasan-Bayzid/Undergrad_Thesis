@@ -1,0 +1,9 @@
+<?php
+
+echo 'hello world!!';
+$color="red";
+echo 'My car is $color color';
+
+$adnan="My name is Adnan"
+echo $adnan;
+?>

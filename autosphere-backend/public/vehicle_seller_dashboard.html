@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicle Seller Dashboard</title>
+
+  <!-- MUST: correct path -->
+  <link rel="stylesheet" href="css/vehicle_seller_dashboard.css" />
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <!-- Topbar -->
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 72 72" role="img" focusable="false">
+            <defs>
+              <linearGradient id="lgV" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#7C5CFF"/>
+                <stop offset="1" stop-color="#22D3EE"/>
+              </linearGradient>
+              <filter id="glowV" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="3" result="b"/>
+                <feMerge>
+                  <feMergeNode in="b"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <rect x="8" y="8" width="56" height="56" rx="18"
+              fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.14)"/>
+            <path d="M20 40c2-8 6-14 14-16h10c8 2 12 8 14 16l-4 3H24l-4-3Z"
+              fill="url(#lgV)" filter="url(#glowV)"/>
+            <circle cx="26" cy="48" r="6" fill="rgba(255,255,255,0.86)"/>
+            <circle cx="46" cy="48" r="6" fill="rgba(255,255,255,0.86)"/>
+            <circle cx="26" cy="48" r="2.2" fill="rgba(0,0,0,0.28)"/>
+            <circle cx="46" cy="48" r="2.2" fill="rgba(0,0,0,0.28)"/>
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <h1>Vehicle Seller Dashboard</h1>
+          <p>Manage listings • Track status • Payments</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn btn-ghost" type="button" id="btnEditProfile">Edit Profile</button>
+        <a class="btn btn-ghost" href="marketplace.html">Marketplace</a>
+        <a class="btn btn-ghost" href="http://localhost:5000\index.html">Auto Vault</a>
+        <a class="btn btn-ghost" href="workshops.html">Workshops</a>
+        <a class="btn btn-danger" href="login.html" id="btnLogout">Logout</a>
+      </div>
+    </header>
+
+    <!-- Seller Card -->
+    <section class="seller glass">
+      <div class="seller-left">
+        <div class="avatar" aria-hidden="true">
+          <span class="dot"></span>
+          <span class="ring"></span>
+        </div>
+
+        <div class="seller-meta">
+          <div class="row">
+            <h2 id="sellerName">Loading...</h2>
+            <span class="badge" id="sellerBadge">Vehicle Seller</span>
+          </div>
+
+          <p class="sub" id="sellerAbout">—</p>
+
+          <div class="seller-kv">
+            <div class="kv">
+              <span class="k">Phone</span>
+              <span class="v" id="sellerPhone">—</span>
+            </div>
+            <div class="kv">
+              <span class="k">Location</span>
+              <span class="v" id="sellerLocation">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="seller-right">
+        <div class="stat">
+          <div class="n" id="statActive">0</div>
+          <div class="t">Active</div>
+        </div>
+        <div class="stat">
+          <div class="n" id="statSold">0</div>
+          <div class="t">Sold</div>
+        </div>
+        <div class="stat">
+          <div class="n" id="statHidden">0</div>
+          <div class="t">Hidden</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add Listing -->
+    <section class="add glass">
+      <div class="section-head">
+        <div>
+          <h3>Add Listing</h3>
+          <p class="muted">Add vehicle details and publish.</p>
+        </div>
+
+        <div class="mini-actions">
+          <button class="btn btn-ghost" type="button" id="btnResetForm">Clear</button>
+          <button class="btn btn-primary" type="button" id="btnSaveListing">Save Listing</button>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field span-2">
+          <label for="vTitle">Title</label>
+          <input id="vTitle" type="text" placeholder="e.g., Toyota Axio 2018" />
+        </div>
+
+        <div class="field">
+          <label for="vType">Vehicle Type</label>
+          <select id="vType">
+            <option value="car">Car</option>
+            <option value="bike">Bike</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="vBrand">Brand</label>
+          <input id="vBrand" type="text" placeholder="e.g., Toyota / Honda" />
+        </div>
+
+        <div class="field">
+          <label for="vYear">Year</label>
+          <input id="vYear" type="number" min="1990" max="2099" placeholder="e.g., 2018" />
+        </div>
+
+        <div class="field">
+          <label for="vCondition">Condition</label>
+          <select id="vCondition">
+            <option value="used">Used</option>
+            <option value="new">New</option>
+            <option value="recondition">Recondition</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="vPrice">Price (BDT)</label>
+          <input id="vPrice" type="number" min="0" placeholder="e.g., 1250000" />
+        </div>
+
+        <div class="field">
+          <label for="vCity">City</label>
+          <input id="vCity" type="text" placeholder="e.g., Dhaka" />
+        </div>
+
+        <div class="field">
+          <label for="vPhone">Contact</label>
+          <input id="vPhone" type="text" placeholder="Phone number" />
+        </div>
+
+        <div class="field">
+          <label for="vLocation">Location</label>
+          <input id="vLocation" type="text" placeholder="Area, City" />
+        </div>
+
+        <div class="field span-2">
+          <label for="vDesc">Description</label>
+          <textarea id="vDesc" rows="3" placeholder="Write a short, clear description..."></textarea>
+        </div>
+
+        <div class="field span-2">
+          <label for="vImages">Images</label>
+          <input id="vImages" type="file" accept="image/*" multiple />
+          <div class="hint">You can select upto 4 images.</div>
+          <div class="thumbs" id="vThumbs"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- My Listings -->
+    <section class="listings glass">
+      <div class="section-head">
+        <div>
+          <h3>My Vehicle Listings</h3>
+          <p class="muted" id="myCount">0 items</p>
+        </div>
+
+        <div class="mini-filters">
+          <div class="search-wrap">
+            <span class="search-ic" aria-hidden="true">⌕</span>
+            <input id="mySearch" type="text" placeholder="Search my listings..." />
+            <button class="btn btn-chip" type="button" id="btnClearMySearch">Clear</button>
+          </div>
+
+          <div class="field">
+            <label for="statusFilter">Status</label>
+            <select id="statusFilter">
+              <option value="all">All</option>
+              <option value="available">Active</option>
+              <option value="sold">Sold</option>
+              <option value="hidden">Hidden</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="mySort">Sort</label>
+            <select id="mySort">
+              <option value="latest">Latest</option>
+              <option value="priceLow">Price: Low → High</option>
+              <option value="priceHigh">Price: High → Low</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips" id="myChips"></div>
+      <div class="grid" id="myGrid"></div>
+
+      <div class="empty glass-soft" id="myEmpty" hidden>
+        <h4>No listings found</h4>
+        <p class="muted">Add a listing or adjust filters.</p>
+        <button class="btn btn-primary" type="button" id="btnClearMyFilters">Clear Filters</button>
+      </div>
+    </section>
+
+    <!-- Payments -->
+    <section class="payments glass">
+      <div class="section-head">
+        <div>
+          <h3>Payments</h3>
+          <p class="muted" id="payCount">0 records</p>
+        </div>
+
+        <div class="mini-filters">
+          <div class="field">
+            <label for="methodFilter">Method</label>
+            <select id="methodFilter">
+              <option value="all">All</option>
+              <option value="bkash">bKash</option>
+              <option value="card">Card</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table" aria-label="Payments table">
+          <thead>
+            <tr>
+              <th>Vehicle</th>
+              <th>Amount</th>
+              <th>Method</th>
+              <th>Reference</th>
+              <th>Date</th>
+              
+            </tr>
+          </thead>
+          <tbody id="payTbody"></tbody>
+        </table>
+      </div>
+
+      <div class="empty glass-soft" id="payEmpty" hidden>
+        <h4>No payment records</h4>
+        <p class="muted">Payments will appear here.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Edit Modal -->
+  <div class="modal" id="editModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="editModal"></div>
+    <div class="modal-card glass">
+      <div class="modal-head">
+        <div>
+          <h3>Edit Listing</h3>
+          <p class="muted">Update your vehicle details.</p>
+        </div>
+        <button class="btn btn-ghost" type="button" data-close="editModal">✕</button>
+      </div>
+
+      <div class="form-grid">
+        <div class="field span-2">
+          <label for="eTitle">Title</label>
+          <input id="eTitle" type="text" />
+        </div>
+
+        <div class="field">
+          <label for="eType">Vehicle Type</label>
+          <select id="eType">
+            <option value="car">Car</option>
+            <option value="bike">Bike</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="eBrand">Brand</label>
+          <input id="eBrand" type="text" />
+        </div>
+
+        <div class="field">
+          <label for="eYear">Year</label>
+          <input id="eYear" type="number" min="1990" max="2099" />
+        </div>
+
+        <div class="field">
+          <label for="eCondition">Condition</label>
+          <select id="eCondition">
+            <option value="used">Used</option>
+            <option value="new">New</option>
+            <option value="recondition">Recondition</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="ePrice">Price (BDT)</label>
+          <input id="ePrice" type="number" min="0" />
+        </div>
+
+        <div class="field">
+          <label for="eCity">City</label>
+          <input id="eCity" type="text" />
+        </div>
+
+        <div class="field">
+          <label for="ePhone">Contact</label>
+          <input id="ePhone" type="text" />
+        </div>
+
+        <div class="field">
+          <label for="eLocation">Location</label>
+          <input id="eLocation" type="text" />
+        </div>
+
+        <div class="field span-2">
+          <label for="eDesc">Description</label>
+          <textarea id="eDesc" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" type="button" data-close="editModal">Cancel</button>
+        <button class="btn btn-primary" type="button" id="btnSaveEdit">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  //
+<!-- Profile Modal -->
+<div class="modal" id="profileModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close="profileModal"></div>
+  <div class="modal-card glass">
+    <div class="modal-head">
+      <div>
+        <h3>Edit Profile</h3>
+        <p class="muted">Update your name or change password.</p>
+      </div>
+      <button class="btn btn-ghost" type="button" data-close="profileModal">✕</button>
+    </div>
+
+    <div class="form-grid">
+      <div class="field span-2">
+        <label for="pName">Full Name</label>
+        <input id="pName" type="text" placeholder="Your name" />
+      </div>
+
+      <div class="field span-2">
+        <label for="pEmail">Email (readonly)</label>
+        <input id="pEmail" type="text" readonly />
+      </div>
+
+      <div class="field">
+        <label for="pOld">Old Password</label>
+        <input id="pOld" type="password" placeholder="Old password" />
+      </div>
+
+      <div class="field">
+        <label for="pNew">New Password</label>
+        <input id="pNew" type="password" placeholder="New password" />
+      </div>
+
+      <div class="field span-2">
+        <label for="pNew2">Confirm New Password</label>
+        <input id="pNew2" type="password" placeholder="Confirm new password" />
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" type="button" data-close="profileModal">Cancel</button>
+      <button class="btn btn-primary" type="button" id="btnSaveProfile">Save</button>
+    </div>
+  </div>
+</div>
+//
+  <!-- Toast -->
+  <div class="floating-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- MUST: correct path -->
+  <script src="js/vehicle_seller_dashboard.js" defer></script>
+</body>
+</html>

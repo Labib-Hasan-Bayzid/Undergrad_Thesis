@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.venv/
+
+# Build outputs
+dist/
+build/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Archives / installers
+*.zip
+*.rar
+*.exe
+*.iso
+*.bin
+
+# System / OS
+$RECYCLE.BIN/
+System Volume Information/
+
+# Logs
+*.log

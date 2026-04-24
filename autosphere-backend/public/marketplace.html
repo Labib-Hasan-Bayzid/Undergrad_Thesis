@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicle Marketplace</title>
+
+  <link rel="stylesheet" href="css/marketplace.css" />
+</head>
+
+<body>
+  <!-- Background -->
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <!-- Topbar -->
+    <header class="topbar glass">
+      <div class="brand">
+        <!-- Better Logo -->
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" focusable="false">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="rgba(124,92,255,0.95)"/>
+                <stop offset="1" stop-color="rgba(34,211,238,0.95)"/>
+              </linearGradient>
+            </defs>
+            <path fill="url(#g1)" d="M14 38c1-7 4-14 8-16 4-3 17-3 20 0 4 2 7 9 8 16 1 6-2 8-6 8h-2a6 6 0 0 1-12 0H28a6 6 0 0 1-12 0h-2c-4 0-7-2-6-8Z"/>
+            <path fill="rgba(255,255,255,0.85)" d="M20 26c2-3 8-4 12-4s10 1 12 4c1 2-1 3-3 3H23c-2 0-4-1-3-3Z"/>
+            <circle cx="22" cy="46" r="5" fill="rgba(0,0,0,0.35)"/>
+            <circle cx="42" cy="46" r="5" fill="rgba(0,0,0,0.35)"/>
+            <circle cx="22" cy="46" r="3" fill="rgba(255,255,255,0.85)"/>
+            <circle cx="42" cy="46" r="3" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <h1>Vehicle Marketplace</h1>
+          <p>Verified listings • Secure payments via bKash & Cards</p>
+        </div>
+      </div>
+
+      <!-- Top right buttons (changed) -->
+      <div class="top-actions">
+        
+        
+<a class="btn btn-ghost" href="card_details.html">Saved Cards</a>
+        <a class="btn btn-ghost" href="http://localhost:5000\index.html" id="btnGoVault">Auto Vault</a>
+        <a class="btn btn-ghost" href="workshops.html" id="btnGoWorkshops">Workshops</a>
+        <a class="btn btn-primary" href="user_buying_history.html" id="btnBuyingHistory" style="display:none;">
+  Buying History
+</a>
+
+        <a class="btn btn-danger" href="login.html" id="btnLogout">Logout</a>
+      </div>
+    </header>
+
+    <!-- Filters -->
+    <section class="filters glass">
+      <div class="search">
+        <span class="icon" aria-hidden="true">⌕</span>
+        <input id="searchInput" type="text" placeholder="Search by model, seller, location..." autocomplete="off" />
+        <button class="btn btn-ghost" id="btnClearSearch" title="Clear">Clear</button>
+      </div>
+
+      <div class="filter-row">
+        <div class="field">
+          <label for="typeFilter">Type</label>
+          <select id="typeFilter">
+            <option value="all">All</option>
+            <option value="car">Car</option>
+            <option value="bike">Bike</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="conditionFilter">Condition</label>
+          <select id="conditionFilter">
+            <option value="all">All</option>
+            <option value="new">New</option>
+            <option value="used">Used</option>
+            <option value="reconditioned">Reconditioned</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="priceFilter">Price Range</label>
+          <select id="priceFilter">
+            <option value="all">Any</option>
+            <option value="0-300000">Up to 3,00,000</option>
+            <option value="300001-800000">3,00,001 – 8,00,000</option>
+            <option value="800001-1500000">8,00,001 – 15,00,000</option>
+            <option value="1500001-999999999">15,00,001+</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sortBy">Sort</label>
+          <select id="sortBy">
+            <option value="latest">Latest</option>
+            <option value="priceLow">Price: Low → High</option>
+            <option value="priceHigh">Price: High → Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="chips" id="activeChips" aria-label="Active filters"></div>
+    </section>
+
+    <!-- Listings -->
+    <section class="content">
+      <div class="content-head">
+        <div class="meta">
+          <h2>Listings</h2>
+          <p id="resultCount">0 results</p>
+        </div>
+
+        <div class="view-toggle">
+          <button class="btn btn-ghost is-active" id="gridViewBtn" aria-pressed="true">Grid</button>
+          <button class="btn btn-ghost" id="listViewBtn" aria-pressed="false">List</button>
+        </div>
+      </div>
+
+      <div id="listingGrid" class="grid"></div>
+
+      <div class="empty glass" id="emptyState" hidden>
+        <h3>No listings found</h3>
+        <p>Try clearing filters or searching with different keywords.</p>
+        <button class="btn btn-primary" id="btnEmptyClear">Clear Filters</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: Listing Details -->
+  <div class="modal" id="detailsModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close="detailsModal"></div>
+    <div class="modal-card glass" role="document" aria-labelledby="detailsTitle">
+      <div class="modal-head">
+        <div>
+          <h3 id="detailsTitle">Listing Details</h3>
+          <p class="muted" id="detailsSub">—</p>
+        </div>
+        <button class="icon-btn" type="button" aria-label="Close" data-close="detailsModal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="details-wrap">
+          <div class="details-media" id="detailsMedia" aria-label="Listing images"></div>
+
+          <div class="details-info">
+            <div class="pill-row" id="detailsPills"></div>
+
+            <div class="kv">
+              <div class="kv-item">
+                <span class="k">Seller</span>
+                <span class="v" id="dSeller">—</span>
+              </div>
+              <div class="kv-item">
+                <span class="k">Phone</span>
+                <span class="v" id="dPhone">—</span>
+              </div>
+              <div class="kv-item">
+                <span class="k">Location</span>
+                <span class="v" id="dLocation">—</span>
+              </div>
+              <div class="kv-item">
+                <span class="k">Price</span>
+                <span class="v" id="dPrice">—</span>
+              </div>
+            </div>
+
+            <div class="box">
+              <h4>Description</h4>
+              <p id="dDesc" class="desc">—</p>
+            </div>
+
+            <div class="actions">
+              <a class="btn btn-ghost" id="btnCallSeller" href="#" rel="nofollow">Call Seller</a>
+              <button class="btn btn-primary" id="btnPayNowFromDetails" type="button">Pay Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Payment -->
+  <div class="modal" id="paymentModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close="paymentModal"></div>
+    <div class="modal-card glass" role="document" aria-labelledby="payTitle">
+      <div class="modal-head">
+        <div>
+          <h3 id="payTitle">Payment Gateway</h3>
+          
+        </div>
+        <button class="icon-btn" type="button" aria-label="Close" data-close="paymentModal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="pay-summary glass-soft">
+          <div>
+            <p class="muted">Paying for</p>
+            <p class="strong" id="payFor">—</p>
+          </div>
+          <div class="pay-amount">
+            <p class="muted">Amount</p>
+            <p class="strong" id="payAmount">—</p>
+          </div>
+        </div>
+
+        <div class="pay-methods">
+          <label class="radio">
+            <input type="radio" name="payMethod" value="bkash" checked />
+            <span class="radio-ui"></span>
+            <span class="radio-text">
+              <span class="strong">Online Payment</span>
+              <span class="muted">Pay using SSLCommerz checkout</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="pay-actions">
+          <button class="btn btn-primary" id="btnProceedPay" type="button">Proceed</button>
+          <button class="btn btn-ghost" data-close="paymentModal" type="button">Cancel</button>
+        </div>
+
+       
+
+        
+      </div>
+    </div>
+  </div>
+<script src="js/payments.js"></script>
+  <script src="js/marketplace.js" defer></script>
+</body>
+</html>

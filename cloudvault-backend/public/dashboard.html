@@ -1,0 +1,445 @@
+<!-- dashboard.html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auto Vault - Dashboard</title>
+
+    <!-- uses bg.jpg + shared theme -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- dashboard-specific -->
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+
+  <body>
+    <div class="bg" aria-hidden="true"></div>
+    <div class="bg-overlay" aria-hidden="true"></div>
+
+    <main class="dash-shell">
+      <!-- Sidebar -->
+      <aside class="dash-side">
+        <div class="side-card glass">
+          <div class="brand compact">
+            <div class="brand-mark" aria-hidden="true">
+              <span class="mark-a"></span>
+              <span class="mark-b"></span>
+            </div>
+            <div class="brand-text">
+              <h1>Auto Vault</h1>
+              <p>Secure record storage</p>
+
+              <!-- ✅ Only ONE banner with unique id -->
+              <div class="sub-banner" id="subBanner">
+                Checking subscription...
+              </div>
+            </div>
+          </div>
+
+          <nav class="nav">
+            <button class="nav-item is-active" type="button">
+              <span class="nav-dot"></span>
+              Upload Center
+            </button>
+            <button class="nav-item" type="button" id="btnLogout">
+              <span class="nav-dot"></span>
+              Logout
+            </button>
+          </nav>
+
+          <div class="premium-card">
+            <p class="premium-title">Auto Vault Premium</p>
+            <button class="btn primary small" type="button" id="subscribeBtn">
+              Subscribe Now
+            </button>
+          </div>
+
+          <div class="side-meta">
+            <div class="mini">
+              <span class="dot"></span>
+              <span>Encrypted storage</span>
+            </div>
+            <div class="mini">
+              <span class="dot"></span>
+              <span>Access history</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <section class="dash-main">
+        <header class="dash-top glass">
+          <div>
+            <h2 class="dash-title">Upload Your Vehicle Documents</h2>
+            <p class="dash-subtitle">
+              Select and upload any documents you want.
+            </p>
+          </div>
+
+          <div class="status">
+            <div class="pill" id="countPill">0 files selected</div>
+            <a
+              class="btn secondary small pill-btn"
+              href="my_document.html"
+              id="myDocumentsBtn"
+              >My Documents</a
+            >
+          </div>
+        </header>
+
+        <div
+          class="dash-alert"
+          id="dashAlert"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+        <form class="dash-grid" id="vaultForm" novalidate>
+          <!-- Document Name (Jomir naam) -->
+          <div class="upload-card glass wide" data-key="docname">
+            <div class="uc-head">
+              <div>
+                <h3>Vehicle Name</h3>
+                <p>Use a unique name for the vehicle documents</p>
+              </div>
+              <span class="tag">Record</span>
+            </div>
+
+            <div class="uc-body">
+              <div class="field">
+                <label for="docName">Name</label>
+                <div class="input-wrap">
+                  <span class="icon" aria-hidden="true">🏷️</span>
+                  <input
+                    id="docName"
+                    type="text"
+                    placeholder="Enter a unique name"
+                  />
+                </div>
+                <p class="hint">
+                  Example: Suzuki Access 125 • BMW X1 • Audi A6
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1) Deed / Title Papers -->
+          <div class="upload-card glass" data-key="deed">
+            <div class="uc-head">
+              <div>
+                <h3>Vehicle Registration Papers</h3>
+                <p>PDF</p>
+              </div>
+              <span class="tag">Documents</span>
+            </div>
+
+            <div class="uc-body">
+              <div class="file-list" id="deedMeta"></div>
+              <div class="uc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-select="deed"
+                >
+                  Select
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-clear="deed"
+                >
+                  Clear
+                </button>
+              </div>
+              <input
+                class="hidden-file"
+                id="deedInput"
+                type="file"
+                accept=".pdf,application/pdf"
+              />
+            </div>
+          </div>
+
+          <!-- 2) Mutation Documents -->
+          <div class="upload-card glass" data-key="mutation">
+            <div class="uc-head">
+              <div>
+                <h3>Fitness Certificate</h3>
+                <p>PDF or image</p>
+              </div>
+              <span class="tag">Documents</span>
+            </div>
+
+            <div class="uc-body">
+              <div class="file-list" id="mutationMeta"></div>
+              <div class="uc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-select="mutation"
+                >
+                  Select
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-clear="mutation"
+                >
+                  Clear
+                </button>
+              </div>
+              <input
+                class="hidden-file"
+                id="mutationInput"
+                type="file"
+                accept=".pdf,application/pdf,image/*"
+              />
+            </div>
+          </div>
+
+          <!-- 3) Tax Receipts -->
+          <div class="upload-card glass" data-key="tax">
+            <div class="uc-head">
+              <div>
+                <h3>Tax Token</h3>
+                <p>PDF or image</p>
+              </div>
+              <span class="tag">Documents</span>
+            </div>
+
+            <div class="uc-body">
+              <div class="file-list" id="taxMeta"></div>
+              <div class="uc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-select="tax"
+                >
+                  Select
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-clear="tax"
+                >
+                  Clear
+                </button>
+              </div>
+              <input
+                class="hidden-file"
+                id="taxInput"
+                type="file"
+                accept=".pdf,application/pdf,image/*"
+              />
+            </div>
+          </div>
+
+          <!-- 4) Mortgage Papers -->
+          <div class="upload-card glass" data-key="mortgage">
+            <div class="uc-head">
+              <div>
+                <h3>Insurance Papers</h3>
+                <p>PDF</p>
+              </div>
+              <span class="tag">Documents</span>
+            </div>
+
+            <div class="uc-body">
+              <div class="file-list" id="mortgageMeta"></div>
+              <div class="uc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-select="mortgage"
+                >
+                  Select
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-clear="mortgage"
+                >
+                  Clear
+                </button>
+              </div>
+              <input
+                class="hidden-file"
+                id="mortgageInput"
+                type="file"
+                accept=".pdf,application/pdf"
+              />
+            </div>
+          </div>
+
+          <!-- 5) Identity Docs: NID -->
+          <div class="upload-card glass" data-key="nid">
+            <div class="uc-head">
+              <div>
+                <h3>Driving License</h3>
+                <p>Image or PDF</p>
+              </div>
+              <span class="tag">Identity</span>
+            </div>
+
+            <div class="uc-body">
+              <div class="file-list" id="nidMeta"></div>
+              <div class="uc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-select="nid"
+                >
+                  Select
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-clear="nid"
+                >
+                  Clear
+                </button>
+              </div>
+              <input
+                class="hidden-file"
+                id="nidInput"
+                type="file"
+                accept="image/*,.pdf,application/pdf"
+              />
+            </div>
+          </div>
+
+          <!-- 6) Evidence Photos -->
+          <div class="upload-card glass" data-key="evidence">
+            <div class="uc-head">
+              <div>
+                <h3>Vehicle Photos</h3>
+                <p>Images</p>
+              </div>
+              <span class="tag">Photos</span>
+            </div>
+
+            <div class="uc-body">
+              <div class="file-list" id="evidenceMeta"></div>
+              <div class="uc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-select="evidence"
+                >
+                  Select
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-clear="evidence"
+                >
+                  Clear
+                </button>
+              </div>
+              <input
+                class="hidden-file"
+                id="evidenceInput"
+                type="file"
+                accept="image/*"
+              />
+            </div>
+          </div>
+
+          <!-- 7) Bank Details -->
+          <div class="upload-card glass wide" data-key="bank">
+            <div class="uc-head">
+              <div>
+                <h3>Bank Details</h3>
+                <p></p>
+              </div>
+              <span class="tag">Details</span>
+            </div>
+
+            <div class="uc-body">
+              <div class="bank-grid">
+                <div class="field">
+                  <label for="bankName">Bank Name</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">🏦</span>
+                    <input
+                      id="bankName"
+                      type="text"
+                      placeholder="Enter bank name"
+                    />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="accHolder">Account Holder Name</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">👤</span>
+                    <input
+                      id="accHolder"
+                      type="text"
+                      placeholder="Enter account holder name"
+                    />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="accNumber">Account Number</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">🔒</span>
+                    <input
+                      id="accNumber"
+                      type="text"
+                      inputmode="numeric"
+                      placeholder="Enter account number"
+                    />
+                    <button class="ghost-btn" type="button" id="toggleAccMask">
+                      Hide
+                    </button>
+                  </div>
+                  <p class="hint">
+                    This field is masked when you click outside.
+                  </p>
+                </div>
+
+                <div class="field">
+                  <label for="routing">Routing Number</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">🔢</span>
+                    <input
+                      id="routing"
+                      type="text"
+                      inputmode="numeric"
+                      placeholder="Enter routing number"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer actions -->
+          <div class="actions-bar glass">
+            <div class="left">
+              <span class="small-note"
+                >Upload works even if you leave some sections empty.</span
+              >
+            </div>
+            <div class="right">
+              <button type="button" class="btn secondary" id="clearAll">
+                Clear all
+              </button>
+              <button type="submit" class="btn primary" id="finalUpload">
+                <span>Upload</span>
+                <span class="btn-glow" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script src="js/auth_guard.js"></script>
+    <script src="js/subscription_banner.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

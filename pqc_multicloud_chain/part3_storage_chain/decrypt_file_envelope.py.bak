@@ -1,0 +1,145 @@
+# decrypt_file_envelope.py
+from __future__ import annotations
+
+import os
+import time
+from typing import Callable
+
+from cryptography.exceptions import InvalidTag
+
+from crypto_utils import sha3_512, aes_gcm_decrypt
+from kms_lib import kms_unwrap_dek
+from merkle_utils import build_merkle_root_sha3_512
+from resource_limits import MAX_CHUNKS_PER_FILE, MAX_DOWNLOAD_SECONDS
+
+
+def _pick_cloud(conn, file_id: str) -> str:
+    forced = os.getenv("DOWNLOAD_CLOUD")
+    if forced:
+        return forced
+
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT DISTINCT cloud_id FROM file_chunks WHERE file_id=%s ORDER BY cloud_id",
+            (file_id,),
+        )
+        rows = cur.fetchall()
+
+    if not rows:
+        raise RuntimeError("NO_CHUNKS")
+    return rows[0][0]
+
+
+def decrypt_file_to_stream(conn, file_id: str, sink_func: Callable[[bytes], None]) -> None:
+    """
+    Verified streaming download (industry-safe):
+      - does NOT fetchall() chunks
+      - hard caps chunk count
+      - time bound for slow queries/clients
+    """
+
+    start_ts = time.time()
+
+    # --- load file metadata ---
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT
+              status,
+              file_size,
+              chunk_size,
+              chunks_total,
+              dek_wrapped,
+              dek_wrap_nonce,
+              kek_version,
+              merkle_root_sha3_512
+            FROM files
+            WHERE file_id=%s
+            """,
+            (file_id,),
+        )
+        row = cur.fetchone()
+
+    if not row:
+        raise RuntimeError("FILE_NOT_FOUND")
+
+    (
+        status,
+        file_size,
+        chunk_size,
+        chunks_total,
+        wrapped_dek,
+        wrap_nonce,
+        kek_version,
+        merkle_root_db,
+    ) = row
+
+    if status != "AVAILABLE":
+        raise RuntimeError("NOT_AVAILABLE")
+
+    if int(chunks_total) <= 0:
+        raise RuntimeError("BAD_CHUNK_COUNT")
+    if int(chunks_total) > MAX_CHUNKS_PER_FILE:
+        raise RuntimeError("TOO_MANY_CHUNKS")
+
+    dek = kms_unwrap_dek(wrapped_dek, wrap_nonce, int(kek_version))
+    cloud = _pick_cloud(conn, file_id)
+
+    # fast count check (no full load)
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT COUNT(*) FROM file_chunks WHERE file_id=%s AND cloud_id=%s",
+            (file_id, cloud),
+        )
+        n = int(cur.fetchone()[0])
+    if n != int(chunks_total):
+        raise RuntimeError("CHUNK_COUNT_MISMATCH")
+
+    leaves = []
+    total_out = 0
+    expected_idx = 0
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT chunk_index, ciphertext, nonce, tag, hash_sha3_512
+                FROM file_chunks
+                WHERE file_id=%s AND cloud_id=%s
+                ORDER BY chunk_index ASC
+                """,
+                (file_id, cloud),
+            )
+
+            for idx, ciphertext, nonce, tag, stored_hash in cur:
+                # time bound
+                if (time.time() - start_ts) > MAX_DOWNLOAD_SECONDS:
+                    raise RuntimeError("DOWNLOAD_TIMEOUT")
+
+                if int(idx) != expected_idx:
+                    raise RuntimeError("CHUNK_INDEX_GAP")
+                expected_idx += 1
+
+                plaintext = aes_gcm_decrypt(dek, nonce, ciphertext, tag, aad=None)
+
+                calc_hash = sha3_512(plaintext)
+                if calc_hash != stored_hash:
+                    raise RuntimeError("CHUNK_HASH_MISMATCH")
+
+                leaves.append(calc_hash)
+                sink_func(plaintext)
+                total_out += len(plaintext)
+
+    except InvalidTag:
+        raise RuntimeError("AES_GCM_TAG_INVALID")
+
+    if expected_idx != int(chunks_total):
+        raise RuntimeError("CHUNK_COUNT_MISMATCH")
+    if total_out != int(file_size):
+        raise RuntimeError("FILE_SIZE_MISMATCH")
+
+    # Merkle verification (bounded because chunks_total is bounded)
+    if merkle_root_db is not None:
+        calc_root = build_merkle_root_sha3_512(leaves)
+        if calc_root != merkle_root_db:
+            raise RuntimeError("MERKLE_MISMATCH")

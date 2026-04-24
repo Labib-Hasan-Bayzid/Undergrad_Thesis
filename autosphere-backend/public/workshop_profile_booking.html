@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Workshop Profile</title>
+
+  <link rel="stylesheet" href="css/workshop_profile_booking.css" />
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+
+    <!-- Topbar -->
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 72 72" role="img" focusable="false">
+            <defs>
+              <linearGradient id="lgW" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#22D3EE"/>
+                <stop offset="1" stop-color="#7C5CFF"/>
+              </linearGradient>
+              <filter id="glowW" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="3" result="b"/>
+                <feColorMatrix in="b" type="matrix"
+                  values="1 0 0 0 0
+                          0 1 0 0 0
+                          0 0 1 0 0
+                          0 0 0 0.35 0" result="g"/>
+                <feMerge>
+                  <feMergeNode in="g"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <rect x="8" y="8" width="56" height="56" rx="18" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.14)"/>
+            <path d="M48.5 24.5a9 9 0 0 0-10.8 1.5l3.8 3.8-7.4 7.4-3.8-3.8A9 9 0 0 0 31.8 44l2.9-2.9 6.3 6.3-2.9 2.9a9 9 0 0 0 10.8-1.5l-4.1-4.1 7.4-7.4 4.1 4.1a9 9 0 0 0-1.5-10.8l-2.9 2.9-6.3-6.3 2.9-2.9Z"
+              fill="url(#lgW)" filter="url(#glowW)"/>
+            <circle cx="24.5" cy="47.5" r="6" fill="rgba(255,255,255,0.86)"/>
+            <circle cx="24.5" cy="47.5" r="2.2" fill="rgba(0,0,0,0.28)"/>
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <h1>Workshop Profile</h1>
+          <p>Choose service • Pick time • Pay securely</p>
+        </div>
+      </div>
+
+      <nav class="top-actions">
+        <a class="btn btn-ghost" href="marketplace.html">Marketplace</a>
+        <a class="btn btn-ghost" href="http://localhost:5000\index.html">Auto Vault</a>
+        <a class="btn btn-ghost" href="workshops.html">Workshops</a>
+        <a class="btn btn-primary" href="user_buying_history.html" id="btnBuyingHistory" style="display:none;">
+  Buying History
+</a>
+
+      </nav>
+    </header>
+
+    <!-- Workshop Profile Card -->
+    <section class="profile glass">
+      <div class="profile-left">
+        <div class="avatar" aria-hidden="true">
+          <span class="dot"></span>
+          <span class="ring"></span>
+        </div>
+
+        <div class="meta">
+          <div class="row">
+            <h2 id="wsName">Loading...</h2>
+            <span class="badge" id="wsBadge">Verified Workshop</span>
+          </div>
+
+          <p class="sub" id="wsAbout">—</p>
+
+          <div class="kv-wrap">
+            <div class="kv">
+              <span class="k">Phone</span>
+              <span class="v" id="wsPhone">—</span>
+            </div>
+            <div class="kv">
+              <span class="k">Location</span>
+              <span class="v" id="wsLocation">—</span>
+            </div>
+            <div class="kv">
+              <span class="k">Hours</span>
+              <span class="v" id="wsHours">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-right">
+        <div class="stat">
+          <div class="n" id="statServices">0</div>
+          <div class="t">Services</div>
+        </div>
+        <div class="stat">
+          <div class="n" id="statRating">4.8</div>
+          <div class="t">Rating</div>
+        </div>
+        <div class="stat">
+          <div class="n" id="statBookings">0</div>
+          <div class="t">Bookings</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services + Booking -->
+    <section class="booking glass">
+      <div class="section-head">
+        <div>
+          <h3>Book a Service</h3>
+          <p class="muted">Select a service and schedule your appointment.</p>
+        </div>
+      </div>
+
+      <div class="layout">
+        <!-- Service list -->
+        <div class="service-panel glass-soft">
+          <div class="panel-head">
+            <h4>Services</h4>
+            <div class="search">
+              <span class="icon" aria-hidden="true">⌕</span>
+              <input id="svcSearch" type="text" placeholder="Search services..." autocomplete="off"/>
+              <button class="btn btn-ghost" type="button" id="btnClearSearch">Clear</button>
+            </div>
+          </div>
+
+          <div class="svc-list" id="svcList"></div>
+
+          <div class="empty glass-soft" id="svcEmpty" hidden>
+            <h4>No services found</h4>
+            <p class="muted">Try another keyword.</p>
+          </div>
+        </div>
+
+        <!-- Booking form -->
+        <div class="form-panel glass-soft">
+          <div class="panel-head">
+            <h4>Details</h4>
+            <div class="mini">
+              <span class="pill" id="selectedPill">No service selected</span>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field span-2">
+              <label>Selected Service</label>
+              <div class="readonly" id="selectedService">—</div>
+            </div>
+
+            <div class="field">
+              <label for="custName">Your Name</label>
+              <input id="custName" type="text" placeholder="Enter your name" />
+            </div>
+
+            <div class="field">
+              <label for="custPhone">Phone</label>
+              <input id="custPhone" type="tel" placeholder="+8801XXXXXXXXX" />
+            </div>
+
+            <div class="field">
+              <label for="vehType">Vehicle Type</label>
+              <select id="vehType">
+                <option value="car">Car</option>
+                <option value="bike">Bike</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="vehInfo">Vehicle Info</label>
+              <input id="vehInfo" type="text" placeholder="e.g., Toyota Axio 2018" />
+            </div>
+
+            <div class="field">
+              <label for="bookDate">Date</label>
+              <input id="bookDate" type="date" />
+            </div>
+
+            <div class="field">
+              <label for="bookTime">Time</label>
+              <select id="bookTime"></select>
+            </div>
+
+            <div class="field span-2">
+              <label for="note">Note</label>
+              <textarea id="note" rows="3" placeholder="Optional note..."></textarea>
+            </div>
+          </div>
+
+          <div class="total">
+            <div>
+              <div class="small">Total</div>
+              <div class="amount" id="totalAmount">BDT 0</div>
+            </div>
+
+            <div class="pay-actions">
+              <button class="btn btn-ghost" type="button" id="btnReset">Clear</button>
+              <button class="btn btn-primary" type="button" id="btnPay">Pay Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment Methods Modal -->
+    <!-- Payment Modal (bKash only) -->
+<div class="modal" id="payModal" aria-hidden="true">
+  <div class="modal-card glass">
+    <div class="modal-head">
+      <div>
+        <h3>Payment</h3>
+        <p class="muted">Confirm and proceed to bKash checkout.</p>
+      </div>
+      <button class="icon-btn" type="button" id="btnCloseModal" aria-label="Close">✕</button>
+    </div>
+
+    <!-- Summary -->
+    <div class="pay-summary glass-soft" style="margin-top:10px;">
+      <div>
+        <p class="muted">Paying for</p>
+        <p class="strong" id="payFor">—</p>
+      </div>
+      <div class="pay-amount">
+        <p class="muted">Amount</p>
+        <p class="strong" id="modalAmount">BDT 0</p>
+      </div>
+    </div>
+
+    <!-- bKash only -->
+    <div class="pay-methods" style="margin-top:12px;">
+      <div class="pill-row">
+        <span class="pill ok">bKash</span>
+        <span class="pill ghost">SSLCommerz checkout</span>
+      </div>
+    </div>
+
+    <div class="modal-foot" style="margin-top:12px;">
+      <button class="btn btn-primary" type="button" id="btnConfirmPay">Proceed</button>
+      <button class="btn btn-ghost" type="button" id="btnCancelPay">Cancel</button>
+    </div>
+  </div>
+</div>
+
+    <!-- Receipt 
+    <section class="receipts glass">
+      <div class="section-head">
+        <div>
+          <h3>Receipts</h3>
+          <p class="muted" id="rcCount">0 records</p>
+        </div>
+        <div class="mini-actions">
+          <button class="btn btn-ghost" type="button" id="btnClearReceipts">Clear Receipts</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table" aria-label="Receipts table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Workshop</th>
+              <th>Amount</th>
+              <th>Method</th>
+              <th>Reference</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="rcTbody"></tbody>
+        </table>
+      </div>
+
+      <div class="empty glass-soft" id="rcEmpty" hidden>
+        <h4>No receipts found</h4>
+        <p class="muted">Payments will appear here.</p>
+      </div>-->
+    </section>
+
+  </main>
+
+  <div class="floating-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<script src="js/payments.js"></script>
+  <script src="js/workshop_profile_booking.js" defer></script>
+</body>
+</html>

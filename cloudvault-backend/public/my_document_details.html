@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auto Vault - Vehicle Details</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/my_document_details.css" />
+  </head>
+
+  <body>
+    <div class="bg" aria-hidden="true"></div>
+    <div class="bg-overlay" aria-hidden="true"></div>
+
+    <main class="details-shell">
+      <aside class="details-side">
+        <div class="side-card glass">
+          <div class="brand compact">
+            <div class="brand-mark" aria-hidden="true">
+              <span class="mark-a"></span>
+              <span class="mark-b"></span>
+            </div>
+            <div class="brand-text">
+              <h1>Auto Vault</h1>
+              <p>Secure vehicle details storage</p>
+            </div>
+          </div>
+
+          <nav class="nav">
+            <button
+              class="nav-item is-active"
+              type="button"
+              id="btnDownloadCenter"
+            >
+              <span class="nav-dot"></span>
+              Download Center
+            </button>
+
+            <a class="nav-item link-btn" href="my_document.html" id="btnGoBack">
+              <span class="nav-dot"></span>
+              Go Back
+            </a>
+
+            <button class="nav-item" type="button" id="btnLogout">
+              <span class="nav-dot"></span>
+              Logout
+            </button>
+          </nav>
+
+          <div class="side-meta">
+            <div class="mini">
+              <span class="dot"></span><span>Encrypted storage</span>
+            </div>
+            <div class="mini">
+              <span class="dot"></span><span>Download history</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="details-main">
+        <header class="details-top glass">
+          <div>
+            <h2 class="details-title">My Vehicle's Document Details</h2>
+            <p class="details-subtitle">
+              View and download your saved documents.
+            </p>
+          </div>
+          <div class="status">
+            <div class="pill" id="docPill">Record: —</div>
+          </div>
+        </header>
+
+        <div
+          class="details-alert"
+          id="detailsAlert"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+        <div class="details-grid">
+          <!-- Document Name -->
+          <div class="detail-card glass wide">
+            <div class="dc-head">
+              <div>
+                <h3>Vehicle Name</h3>
+                <p>Use a unique name for the Vehicle record</p>
+              </div>
+              <span class="tag">Record</span>
+            </div>
+
+            <div class="dc-body">
+              <div class="field">
+                <label>Name</label>
+                <div class="input-wrap">
+                  <span class="icon" aria-hidden="true">🏷️</span>
+                  <input type="text" id="docNameInput" value="—" readonly />
+                </div>
+                <p class="hint">
+                  Example: Suzuki Access 125 • BMW X1 • Audi A6
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1) Deed -->
+          <div class="detail-card glass" data-kind="file" data-category="DEED">
+            <div class="dc-head">
+              <div>
+                <h3>Vehicle Registration Papers</h3>
+                <p>PDF</p>
+              </div>
+              <span class="tag">Documents</span>
+            </div>
+
+            <div class="dc-body">
+              <div class="file-list"></div>
+
+              <div class="dc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="view"
+                  data-category="DEED"
+                >
+                  View
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="download"
+                  data-category="DEED"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2) Mutation -->
+          <div
+            class="detail-card glass"
+            data-kind="file"
+            data-category="MUTATION"
+          >
+            <div class="dc-head">
+              <div>
+                <h3>Fitness Certificate</h3>
+                <p>PDF or image</p>
+              </div>
+              <span class="tag">Documents</span>
+            </div>
+
+            <div class="dc-body">
+              <div class="file-list"></div>
+
+              <div class="dc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="view"
+                  data-category="MUTATION"
+                >
+                  View
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="download"
+                  data-category="MUTATION"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3) Tax -->
+          <div class="detail-card glass" data-kind="file" data-category="TAX">
+            <div class="dc-head">
+              <div>
+                <h3>Tax Token</h3>
+                <p>PDF or image</p>
+              </div>
+              <span class="tag">Documents</span>
+            </div>
+
+            <div class="dc-body">
+              <div class="file-list"></div>
+
+              <div class="dc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="view"
+                  data-category="TAX"
+                >
+                  View
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="download"
+                  data-category="TAX"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4) Mortgage -->
+          <div
+            class="detail-card glass"
+            data-kind="file"
+            data-category="MORTGAGE"
+          >
+            <div class="dc-head">
+              <div>
+                <h3>Insurance Papers</h3>
+                <p>PDF</p>
+              </div>
+              <span class="tag">Documents</span>
+            </div>
+
+            <div class="dc-body">
+              <div class="file-list"></div>
+
+              <div class="dc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="view"
+                  data-category="MORTGAGE"
+                >
+                  View
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="download"
+                  data-category="MORTGAGE"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5) NID -->
+          <div class="detail-card glass" data-kind="file" data-category="NID">
+            <div class="dc-head">
+              <div>
+                <h3>Driving License</h3>
+                <p>Image or PDF</p>
+              </div>
+              <span class="tag">Identity</span>
+            </div>
+
+            <div class="dc-body">
+              <div class="file-list"></div>
+
+              <div class="dc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="view"
+                  data-category="NID"
+                >
+                  View
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="download"
+                  data-category="NID"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6) Evidence -->
+          <div
+            class="detail-card glass"
+            data-kind="file"
+            data-category="EVIDENCE"
+          >
+            <div class="dc-head">
+              <div>
+                <h3>Vehicle Photos</h3>
+                <p>Images</p>
+              </div>
+              <span class="tag">Photos</span>
+            </div>
+
+            <div class="dc-body">
+              <div class="file-list"></div>
+
+              <div class="dc-actions">
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="view"
+                  data-category="EVIDENCE"
+                >
+                  View
+                </button>
+                <button
+                  type="button"
+                  class="btn secondary small"
+                  data-action="download"
+                  data-category="EVIDENCE"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bank Details -->
+          <div class="detail-card glass wide" data-kind="bank">
+            <div class="dc-head">
+              <div>
+                <h3>Bank Details</h3>
+                <p>Fill any fields you want</p>
+              </div>
+              <span class="tag">Details</span>
+            </div>
+
+            <div class="dc-body">
+              <div class="bank-grid">
+                <div class="field">
+                  <label>Bank Name</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">🏦</span>
+                    <input type="text" id="bankNameInput" value="—" readonly />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>Account Holder Name</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">👤</span>
+                    <input type="text" id="accHolderInput" value="—" readonly />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>Account Number</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">🔒</span>
+                    <input type="text" id="accNumberInput" value="—" readonly />
+                  </div>
+                  <p class="hint">This field is masked.</p>
+                </div>
+
+                <div class="field">
+                  <label>Routing Number</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">🔢</span>
+                    <input type="text" id="routingInput" value="—" readonly />
+                  </div>
+                </div>
+              </div>
+
+              <div class="dc-actions wide-actions">
+                <button type="button" class="btn secondary" id="btnViewBank">
+                  View
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Main modal -->
+    <div class="modal" id="modal">
+      <div class="modal-box glass">
+        <div class="modal-head">
+          <div class="modal-title" id="modalTitle">View</div>
+          <button class="btn secondary small" type="button" id="modalClose">
+            Close
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+      </div>
+    </div>
+
+    <!-- OTP modal -->
+    <div class="modal" id="otpModal" aria-hidden="true">
+      <div class="modal-box glass">
+        <div class="modal-head">
+          <div class="modal-title" id="otpTitle">OTP Verification</div>
+          <button class="btn secondary small" type="button" id="otpClose">
+            Close
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div style="margin-bottom: 10px; color: rgba(255, 255, 255, 0.75)">
+            We sent a 6-digit OTP to your email. Please provide the otp here. It
+            will expire within 2 minutes.
+          </div>
+
+          <div class="field">
+            <label>OTP Code</label>
+            <div class="input-wrap">
+              <span class="icon" aria-hidden="true">🔐</span>
+              <input
+                id="otpInput"
+                type="text"
+                inputmode="numeric"
+                maxlength="6"
+                placeholder="Enter 6-digit OTP"
+              />
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 12px">
+            <button class="btn primary" type="button" id="otpSubmit">
+              Verify
+            </button>
+            <button class="btn secondary" type="button" id="otpResend">
+              Resend OTP
+            </button>
+          </div>
+
+          <div
+            id="otpMsg"
+            style="margin-top: 10px; color: #ffb3b3; font-size: 13px"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/auth_guard.js"></script>
+    <script src="js/my_document_details.js"></script>
+  </body>
+</html>

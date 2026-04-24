@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin • Sellers</title>
+
+  <link rel="stylesheet" href="css/admin_sellers.css" />
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <!-- Topbar -->
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" focusable="false">
+            <defs>
+              <linearGradient id="as1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="rgba(124,92,255,0.95)"/>
+                <stop offset="1" stop-color="rgba(34,211,238,0.95)"/>
+              </linearGradient>
+            </defs>
+            <path fill="url(#as1)" d="M32 8c10 0 18 8 18 18s-8 18-18 18S14 36 14 26 22 8 32 8z"/>
+            <path fill="rgba(255,255,255,0.9)" d="M22 50c2.5-7 8.2-10 10-10s7.5 3 10 10v6H22v-6z"/>
+            <path fill="rgba(0,0,0,0.2)" d="M28 25a4 4 0 108 0 4 4 0 10-8 0z"/>
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <h1>Sellers</h1>
+          <p>Verify sellers • Manage status</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <a class="btn btn-ghost" href="admin_dashboard.html">Dashboard</a>
+        <a class="btn btn-ghost" href="admin_records.html">Records</a>
+        <a class="btn btn-ghost" href="marketplace.html">Marketplace</a>
+        <a class="btn btn-ghost" href="workshops.html">Workshops</a>
+        <a class="btn btn-danger" href="login.html" id="btnLogout">Logout</a>
+      </div>
+    </header>
+
+    <!-- Control bar -->
+    <section class="controls glass">
+      <div class="seg">
+        <button class="seg-btn is-active" id="segAll" type="button">All</button>
+        <button class="seg-btn" id="segVehicle" type="button">Vehicle Sellers</button>
+        <button class="seg-btn" id="segWorkshop" type="button">Workshop Sellers</button>
+      </div>
+
+      <div class="search">
+        <span class="icon" aria-hidden="true">⌕</span>
+        <input id="searchInput" type="text" placeholder="Search by seller name, phone, city..." autocomplete="off" />
+        <button class="btn btn-ghost btn-mini" id="btnClearSearch" type="button">Clear</button>
+      </div>
+
+      <div class="filters">
+        <div class="field">
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter">
+            <option value="all">All</option>
+            <option value="verified">Verified</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sortBy">Sort</label>
+          <select id="sortBy">
+            <option value="recommended">Recommended</option>
+            <option value="nameAsc">Name: A → Z</option>
+            <option value="nameDesc">Name: Z → A</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" id="btnApply" type="button">Apply</button>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="kpis">
+      <article class="kpi glass">
+        <p class="kpi-label">Total Sellers</p>
+        <p class="kpi-value" id="kpiTotal">0</p>
+        <p class="kpi-sub" id="kpiTotalSub">—</p>
+      </article>
+
+      <article class="kpi glass">
+        <p class="kpi-label">Verified</p>
+        <p class="kpi-value" id="kpiVerified">0</p>
+        <p class="kpi-sub" id="kpiVerifiedSub">—</p>
+      </article>
+
+      <article class="kpi glass">
+        <p class="kpi-label">Pending</p>
+        <p class="kpi-value" id="kpiPending">0</p>
+        <p class="kpi-sub" id="kpiPendingSub">—</p>
+      </article>
+    </section>
+
+    <!-- VEHICLE SECTION -->
+    <section class="section glass" id="vehicle">
+      <div class="section-head">
+        <div>
+          <h2>Vehicle Sellers</h2>
+          <p class="muted">Verify and manage vehicle sellers</p>
+        </div>
+
+        <div class="section-actions">
+          <button class="btn btn-ghost btn-mini" id="btnRefreshVehicle" type="button">Refresh</button>
+        </div>
+      </div>
+
+      <div class="table">
+        <div class="trow thead">
+          <div class="tcell">Seller</div>
+          <div class="tcell">Phone</div>
+          <div class="tcell">City</div>
+          <div class="tcell">Status</div>
+          <div class="tcell">Action</div>
+        </div>
+        <div id="vehicleRows"></div>
+      </div>
+
+      <div class="empty glass-soft" id="vehicleEmpty" hidden>
+        <h3>No vehicle sellers found</h3>
+        <p>Try clearing filters.</p>
+      </div>
+    </section>
+
+    <!-- WORKSHOP SECTION -->
+    <section class="section glass" id="workshop">
+      <div class="section-head">
+        <div>
+          <h2>Workshop Sellers</h2>
+          <p class="muted">Verify and manage workshop providers</p>
+        </div>
+
+        <div class="section-actions">
+          <button class="btn btn-ghost btn-mini" id="btnRefreshWorkshop" type="button">Refresh</button>
+        </div>
+      </div>
+
+      <div class="table">
+        <div class="trow thead">
+          <div class="tcell">Workshop</div>
+          <div class="tcell">Phone</div>
+          <div class="tcell">City</div>
+          <div class="tcell">Status</div>
+          <div class="tcell">Action</div>
+        </div>
+        <div id="workshopRows"></div>
+      </div>
+
+      <div class="empty glass-soft" id="workshopEmpty" hidden>
+        <h3>No workshop sellers found</h3>
+        <p>Try clearing filters.</p>
+      </div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  </main>
+
+  <script src="js/admin_sellers.js" defer></script>
+</body>
+</html>

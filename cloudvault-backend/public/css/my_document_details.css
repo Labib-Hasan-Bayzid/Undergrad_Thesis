@@ -1,0 +1,337 @@
+/* css/my_document_details.css */
+/* Uses shared tokens from css/style.css (glass, btn, --radius, --shadow, --muted, etc.) */
+
+.details-shell{
+  position:relative;
+  min-height:100vh;
+  display:grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  padding: 22px;
+  max-width: 1320px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.details-side{
+  position: sticky;
+  top: 22px;
+  height: fit-content;
+}
+
+.side-card{ padding: 16px; }
+
+/* Reuse nav styles like dashboard (copy same behavior) */
+.nav{
+  margin-top: 14px;
+  display:flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item{
+  width:100%;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.12);
+  color: rgba(255,255,255,.86);
+  border-radius: 14px;
+  padding: 12px 12px;
+  cursor: pointer;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  text-decoration: none;
+}
+.nav-item:hover{
+  border-color: rgba(255,255,255,.22);
+  background: rgba(255,255,255,.08);
+}
+.nav-item.is-active{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(124,92,255,.45);
+}
+
+.nav-dot{
+  width: 10px; height: 10px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(0,212,255,.75));
+  box-shadow: 0 8px 18px rgba(124,92,255,.20);
+}
+
+.side-meta{
+  margin-top: 14px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--muted2);
+  font-size: 12px;
+}
+
+.details-main{
+  display:flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.details-top{
+  padding: 16px 18px;
+  display:flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.details-title{
+  margin:0;
+  font-size: 22px;
+  letter-spacing: .2px;
+}
+.details-subtitle{
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.status{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items:center;
+}
+
+.pill{
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.14);
+  color: rgba(255,255,255,.86);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.details-alert{
+  display:none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.16);
+  color: rgba(255,255,255,.90);
+}
+.details-alert.is-open{ display:block; }
+.details-alert.ok{
+  border-color: rgba(53,208,127,.35);
+  background: rgba(53,208,127,.12);
+}
+.details-alert.err{
+  border-color: rgba(255,77,109,.35);
+  background: rgba(255,77,109,.12);
+}
+
+/* Grid like dashboard upload grid */
+.details-grid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+
+.detail-card{
+  grid-column: span 6;
+  padding: 14px;
+  overflow:hidden;
+}
+.detail-card.wide{
+  grid-column: span 12;
+}
+
+.dc-head{
+  display:flex;
+  justify-content: space-between;
+  align-items:flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.dc-head h3{
+  margin:0;
+  font-size: 16px;
+  letter-spacing: .2px;
+}
+.dc-head p{
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.tag{
+  font-size: 12px;
+  font-weight: 900;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.08);
+  color: rgba(255,255,255,.88);
+}
+
+.dc-body{
+  display:flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* input styles same as dashboard */
+.field label{
+  display:block;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(255,255,255,.86);
+  margin-bottom: 6px;
+}
+
+.input-wrap{
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.14);
+  border-radius: 14px;
+  padding: 10px 12px;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+
+.input-wrap input{
+  width:100%;
+  border:0;
+  outline:none;
+  background: transparent;
+  color: rgba(255,255,255,.92);
+  font-weight: 750;
+}
+
+.hint{
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* file list same style */
+.file-list{
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.14);
+  border-radius: 14px;
+  padding: 10px;
+  min-height: 54px;
+  max-height: 140px;
+  overflow: auto;
+  display:flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-item{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+}
+
+.file-left{
+  display:flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.file-name{
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(255,255,255,.90);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 420px;
+}
+
+.file-meta{
+  font-size: 11px;
+  color: rgba(255,255,255,.62);
+  font-weight: 650;
+}
+
+/* actions */
+.dc-actions{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  justify-content:flex-start;
+}
+
+.wide-actions{
+  justify-content:flex-end;
+}
+
+/* bank grid same as dashboard */
+.bank-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* Modal */
+.modal{
+  position: fixed;
+  inset: 0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding: 18px;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+}
+.modal.open{ display:flex; }
+
+.modal-box{
+  width: min(820px, 96vw);
+  padding: 14px;
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.modal-title{
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+.modal-body{
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.14);
+  border-radius: 14px;
+  padding: 12px;
+  color: rgba(255,255,255,.86);
+  line-height: 1.6;
+  overflow:auto;
+  max-height: 60vh;
+}
+
+@media (max-width: 1100px){
+  .details-shell{ grid-template-columns: 1fr; }
+  .details-side{ position: relative; top: 0; }
+}
+
+@media (max-width: 860px){
+  .detail-card{ grid-column: span 12; }
+  .bank-grid{ grid-template-columns: 1fr; }
+  .file-name{ max-width: 260px; }
+}

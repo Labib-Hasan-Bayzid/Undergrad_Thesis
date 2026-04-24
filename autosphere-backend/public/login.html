@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AutoSphere</title>
+
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <section class="auth glass">
+      <!-- Header -->
+      <header class="head">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">
+            <svg viewBox="0 0 64 64" role="img" focusable="false">
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="rgba(124,92,255,0.95)"/>
+                  <stop offset="1" stop-color="rgba(34,211,238,0.95)"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#g1)" d="M32 8c9.5 0 17.2 7.7 17.2 17.2S41.5 42.4 32 42.4 14.8 34.7 14.8 25.2 22.5 8 32 8z"/>
+              <path fill="rgba(255,255,255,0.88)" d="M14 56c2.6-10.2 10.1-14.8 18-14.8S47.4 45.8 50 56v2H14v-2z"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>AutoSphere</h1>
+            <p>Get access to our marketplace, services, and vault</p>
+          </div>
+        </div>
+
+        <!-- Switch buttons -->
+        <div class="switch" role="tablist" aria-label="Access options">
+          <button class="sw is-active" id="btnTabLogin" type="button" role="tab" aria-selected="true">Login</button>
+          <button class="sw" id="btnTabSignup" type="button" role="tab" aria-selected="false">Sign up</button>
+          <button class="sw" id="btnTabForgot" type="button" role="tab" aria-selected="false">Forget Password</button>
+        </div>
+      </header>
+
+      <!-- Body -->
+      <div class="body">
+        <!-- LOGIN -->
+        <section class="panel" id="panelLogin" role="tabpanel">
+          <h2 class="title">Login</h2>
+          <p class="sub">Use your email and password to continue.</p>
+
+          <form id="loginForm" class="form" novalidate>
+            <div class="row-2">
+              <div class="field">
+                <label for="loginRole">Role</label>
+                <select id="loginRole" required>
+                  <option value="user">User</option>
+                  <option value="vehicle_seller">Vehicle Seller</option>
+                  <option value="service_seller">Service & Spare Parts Seller</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="loginEmail">Email</label>
+                <div class="input">
+                  <span class="ico" aria-hidden="true">✉</span>
+                  <input id="loginEmail" type="email" placeholder="name@email.com" autocomplete="email" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="loginPassword">Password</label>
+              <div class="input">
+                <span class="ico" aria-hidden="true">🔒</span>
+                <input id="loginPassword" type="password" placeholder="Enter your password" autocomplete="current-password" required />
+                <button class="pillbtn" id="btnLoginToggle" type="button">Show</button>
+              </div>
+            </div>
+
+            <div class="row-actions">
+              <label class="check">
+                <input id="rememberMe" type="checkbox" />
+                <span>Remember me</span>
+              </label>
+
+              <button class="link" id="btnGotoForgot" type="button">Forget Password?</button>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Login</button>
+          </form>
+
+          <div class="hint">
+            <span class="muted">No account?</span>
+            <button class="link" id="btnGotoSignup" type="button">Create one</button>
+          </div>
+        </section>
+
+        <!-- SIGN UP -->
+        <section class="panel" id="panelSignup" role="tabpanel" hidden>
+          <h2 class="title">Sign up</h2>
+          <p class="sub">Create an account to continue.</p>
+
+          <form id="signupForm" class="form" novalidate>
+            <div class="row-2">
+              <div class="field">
+                <label for="signupRole">Role</label>
+                <select id="signupRole" required>
+                  <option value="user">User</option>
+                  <option value="vehicle_seller">Vehicle Seller</option>
+                  <option value="service_seller">Service & Spare Parts Seller</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="signupName">Full Name</label>
+                <div class="input">
+                  <span class="ico" aria-hidden="true">👤</span>
+                  <input id="signupName" type="text" placeholder="Your name" autocomplete="name" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="row-2">
+              <div class="field">
+                <label for="signupEmail">Email</label>
+                <div class="input">
+                  <span class="ico" aria-hidden="true">✉</span>
+                  <input id="signupEmail" type="email" placeholder="name@email.com" autocomplete="email" required />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="signupPhone">Phone</label>
+                <div class="input">
+                  <span class="ico" aria-hidden="true">☎</span>
+                  <input id="signupPhone" type="tel" placeholder="+8801XXXXXXXXX" autocomplete="tel" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="row-2">
+              <div class="field">
+                <label for="signupCity">City</label>
+                <select id="signupCity" required>
+                  <option value="Dhaka">Dhaka</option>
+                  <option value="Chattogram">Chattogram</option>
+                  <option value="Sylhet">Sylhet</option>
+                  <option value="Rajshahi">Rajshahi</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="signupPassword">Password</label>
+                <div class="input">
+                  <span class="ico" aria-hidden="true">🔒</span>
+                  <input id="signupPassword" type="password" placeholder="Create a password" autocomplete="new-password" required />
+                  <button class="pillbtn" id="btnSignupToggle" type="button">Show</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Seller extra fields -->
+            <div class="seller-box glass-soft" id="sellerFields" hidden>
+              <div class="seller-head">
+                <h3>Seller Information</h3>
+                <p class="muted">Provide required business details.</p>
+              </div>
+
+              <div class="row-2">
+                <div class="field">
+                  <label for="sellerLocation">Location</label>
+                  <div class="input">
+                    <span class="ico" aria-hidden="true">📍</span>
+                    <input id="sellerLocation" type="text" placeholder="Area, City" />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="sellerContact">Contact Info</label>
+                  <div class="input">
+                    <span class="ico" aria-hidden="true">☎</span>
+                    <input id="sellerContact" type="text" placeholder="Phone / Office contact" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row-2">
+                <div class="field">
+                  <label for="sellerTin">TIN Number</label>
+                  <input id="sellerTin" type="text" placeholder="TIN" />
+                </div>
+                <div></div>
+              </div>
+
+              <!-- ONLY uploads here (no license number, no tax info text) -->
+              <div class="row-2">
+                <div class="field">
+                  <label>Trade License File</label>
+                  <div class="upload">
+                    <input id="tradeFile" type="file" accept="application/pdf,image/*" hidden />
+                    <button class="btn btn-ghost" id="btnTradeUpload" type="button">Upload</button>
+                    <span class="file" id="tradeFileName">No file selected</span>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>Income Tax File</label>
+                  <div class="upload">
+                    <input id="taxFile" type="file" accept="application/pdf,image/*" hidden />
+                    <button class="btn btn-ghost" id="btnTaxUpload" type="button">Upload</button>
+                    <span class="file" id="taxFileName">No file selected</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Create Account</button>
+          </form>
+
+          <div class="hint">
+            <span class="muted">Already have an account?</span>
+            <button class="link" id="btnGotoLogin" type="button">Login</button>
+          </div>
+        </section>
+
+        <!-- FORGOT -->
+        <section class="panel" id="panelForgot" role="tabpanel" hidden>
+          <h2 class="title">Forget Password</h2>
+          <p class="sub">Enter your email to reset your password.</p>
+
+          <form id="forgotForm" class="form" novalidate>
+            <div class="row-2">
+              <div class="field">
+                <label for="forgotRole">Role</label>
+                <select id="forgotRole" required>
+                  <option value="user">User</option>
+                  <option value="vehicle_seller">Vehicle Seller</option>
+                  <option value="service_seller">Service & Spare Parts Seller</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="forgotEmail">Email</label>
+                <div class="input">
+                  <span class="ico" aria-hidden="true">✉</span>
+                  <input id="forgotEmail" type="email" placeholder="name@email.com" autocomplete="email" required />
+                </div>
+              </div>
+            </div>
+
+           
+            <button class="btn btn-primary" type="submit">Send OTP</button>
+
+<!-- OTP + Reset (hidden until OTP sent) -->
+<div class="seller-box glass-soft" id="otpBox" hidden style="margin-top:12px;">
+  <div class="seller-head">
+    <h3>Verify OTP & Reset Password</h3>
+    <p class="muted">Check your email for OTP, then set new password.</p>
+  </div>
+
+  <div class="row-2">
+    <div class="field">
+      <label for="otpInput">OTP</label>
+      <input id="otpInput" type="text" placeholder="Enter OTP" />
+    </div>
+    <div class="field" style="display:flex; align-items:end;">
+      <button class="btn btn-ghost" type="button" id="btnVerifyOtp">Verify OTP</button>
+    </div>
+  </div>
+
+  <div class="row-2">
+    <div class="field">
+      <label for="newPass">New Password</label>
+      <input id="newPass" type="password" placeholder="New password" />
+    </div>
+    <div class="field">
+      <label for="newPass2">Confirm Password</label>
+      <input id="newPass2" type="password" placeholder="Confirm password" />
+    </div>
+  </div>
+
+  <button class="btn btn-primary" type="button" id="btnResetPass">Reset Password</button>
+</div>
+
+            
+            
+
+            <div class="hint">
+              <span class="muted">Back to</span>
+              <button class="link" id="btnForgotToLogin" type="button">Login</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+    </section>
+  </main>
+
+  <script src="js/auth.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buying History</title>
+
+  <!-- Keep your theme CSS -->
+  <link rel="stylesheet" href="/css/vehicle_seller_dashboard1.css" />
+
+  <style>
+    .shell { max-width: 1120px; margin: 0 auto; padding: 22px 16px 40px; }
+    .content { margin-top: 14px; }
+
+    /* Top-right user block */
+    .userbox{
+      display:flex; align-items:center; gap:10px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+    .userdot{
+      width: 10px; height: 10px; border-radius: 999px;
+      background: rgba(34,211,238,0.9);
+      box-shadow: 0 0 0 6px rgba(34,211,238,0.12);
+      flex: 0 0 auto;
+    }
+    .userbox .meta{ display:flex; flex-direction:column; line-height:1.1; }
+    .userbox .name{ font-weight:800; font-size:13px; }
+    .userbox .role{ opacity:.75; font-size:12px; }
+    .userbox .btn{ padding: 8px 10px; border-radius: 12px; }
+
+    /* Filters */
+    .filters { padding: 14px; }
+    .filters .search {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+    .filters .search .icon { opacity: .75; font-size: 14px; }
+    .filters .search input{
+      flex: 1;
+      min-width: 180px;
+      outline: none;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 14px;
+    }
+    .filters .search .btn { white-space: nowrap; }
+
+    .filter-row{
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .field label { display: block; font-size: 12px; opacity: .8; margin-bottom: 6px; }
+    .field select, .field input{
+      width: 100%;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.12);
+      color: inherit;
+      outline: none;
+    }
+
+    /* Chips */
+    .chips{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .chip{
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      font-size: 12px;
+    }
+    .chip button{
+      border: 0;
+      background: transparent;
+      color: inherit;
+      opacity: .8;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    /* Content head */
+    .content-head{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap: 12px; margin: 12px 0;
+    }
+    .content-head .meta h2{ margin: 0; font-size: 18px; }
+    .content-head .meta p{ margin: 6px 0 0; opacity: .75; }
+
+    /* List/grid container */
+    #itemsWrap.list { display: flex; flex-direction: column; gap: 10px; }
+    #itemsWrap.is-grid{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    /* History item card */
+    .history-item{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 12px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+    .history-item .left{ display:flex; align-items:center; gap: 12px; min-width: 0; }
+    .history-item .info{ min-width: 0; }
+    .history-item .info h4{
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 520px;
+    }
+    .history-item .info .muted{ margin: 6px 0 0; opacity: .75; font-size: 12px; }
+
+    /* Clean badge instead of emoji */
+    .history-item .ic{
+      width: 40px; height: 40px;
+      border-radius: 14px;
+      display:flex; align-items:center; justify-content:center;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.18);
+      font-size: 0;
+      position: relative;
+      flex: 0 0 auto;
+    }
+    .history-item .ic::before{
+      content: "";
+      width: 10px; height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.6);
+      opacity: .75;
+      display:block;
+    }
+
+    .history-item .pill-row{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 8px; }
+    .pill{
+      display:inline-flex; align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+    .pill.ok{ background: rgba(46, 204, 113, 0.14); border-color: rgba(46, 204, 113, 0.25); }
+    .pill.warn{ background: rgba(241, 196, 15, 0.14); border-color: rgba(241, 196, 15, 0.25); }
+    .pill.bad{ background: rgba(231, 76, 60, 0.14); border-color: rgba(231, 76, 60, 0.25); }
+    .pill.ghost{ opacity: .9; }
+
+    .history-item .right{ text-align:right; display:flex; flex-direction:column; gap: 8px; }
+    .history-item .amt{ font-weight: 800; font-size: 14px; }
+    .history-item .btn{ align-self:flex-end; }
+
+    .empty{ margin-top: 14px; padding: 18px; border-radius: 18px; }
+
+    /* Modal */
+    .modal-card{ max-width: 980px; width: calc(100% - 24px); margin: 0 auto; }
+    .detail-grid{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 12px;
+    }
+    .detail-left{ padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.10); }
+    .detail-right .kv{
+      display:grid; gap: 8px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+    .kv-item{ display:flex; justify-content:space-between; gap: 12px; }
+    .kv-item .k{ opacity: .75; font-size: 12px; }
+    .kv-item .v{ font-weight: 700; font-size: 12px; text-align:right; }
+    .box{
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+    .box h4{ margin: 0 0 8px; font-size: 13px; }
+    .box .desc{ margin: 0; opacity: .85; font-size: 12px; line-height: 1.45; }
+
+    /* Edit modal form */
+    .edit-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .edit-grid .span-2{ grid-column: 1 / -1; }
+    .modal-actions{
+      display:flex; gap: 10px; justify-content:flex-end; margin-top: 12px;
+    }
+
+    @media (max-width: 980px){
+      .filter-row{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #itemsWrap.is-grid{ grid-template-columns: 1fr; }
+      .detail-grid{ grid-template-columns: 1fr; }
+      .history-item .info h4{ max-width: 320px; }
+      .edit-grid{ grid-template-columns: 1fr; }
+      .edit-grid .span-2{ grid-column: 1 / -1; }
+      .userbox .role{ display:none; }
+    }
+    @media (max-width: 520px){
+      .filters .search{ flex-wrap: wrap; }
+      .filters .search input{ min-width: 100%; }
+      .history-item{ align-items:flex-start; }
+      .history-item .right{ align-items:flex-end; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <!-- Topbar -->
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">AS</div>
+        <div>
+          <h1>Buying History</h1>
+          <p class="muted">Your purchases & payment records</p>
+        </div>
+      </div>
+
+      <nav class="top-actions">
+        <!-- ✅ user box -->
+        <div class="userbox" id="userBox" style="display:none;">
+          <span class="userdot" aria-hidden="true"></span>
+          <div class="meta">
+            <div class="name" id="uiUserName">—</div>
+            <div class="role" id="uiUserRole">—</div>
+          </div>
+          <button class="btn btn-ghost" id="btnEditProfile" type="button">Edit</button>
+        </div>
+
+        <a class="btn btn-ghost" href="marketplace.html">Marketplace</a>
+        <button class="btn btn-ghost" id="btnLogout" type="button">Logout</button>
+      </nav>
+    </header>
+
+    <!-- Filters -->
+    <section class="filters glass">
+      <div class="search">
+        <span class="icon" aria-hidden="true">⌕</span>
+        <input id="searchInput" type="text" placeholder="Search by item, seller, receipt, category..." autocomplete="off" />
+        <button class="btn btn-ghost" id="btnClearSearch" type="button">Clear</button>
+      </div>
+
+      <div class="filter-row">
+        <div class="field">
+          <label for="typeFilter">Category</label>
+          <select id="typeFilter">
+            <option value="all">All</option>
+            <option value="vehicle">Vehicle</option>
+            <option value="service">Service</option>
+            <option value="parts">Spare Parts</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter">
+            <option value="all">All</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="methodFilter">Payment</label>
+          <select id="methodFilter">
+            <option value="all">All</option>
+            <option value="bkash">bKash</option>
+            <option value="card">Card</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sortBy">Sort</label>
+          <select id="sortBy">
+            <option value="recent">Most recent</option>
+            <option value="oldest">Oldest</option>
+            <option value="priceHigh">Amount: High → Low</option>
+            <option value="priceLow">Amount: Low → High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="chips" id="activeChips" aria-label="Active filters"></div>
+    </section>
+
+    <!-- Content -->
+    <section class="content">
+      <div class="content-head">
+        <div class="meta">
+          <h2 id="contentTitle">All Purchases</h2>
+          <p id="resultCount">0 records</p>
+        </div>
+
+        <div class="view-toggle">
+          <button class="btn btn-ghost is-active" id="listViewBtn" type="button" aria-pressed="true">List</button>
+          <button class="btn btn-ghost" id="gridViewBtn" type="button" aria-pressed="false">Grid</button>
+        </div>
+      </div>
+
+      <div id="itemsWrap" class="list"></div>
+
+      <div class="empty glass" id="emptyState" hidden>
+        <h3>No records found</h3>
+        <p>Try clearing filters or searching with different keywords.</p>
+        <button class="btn btn-primary" id="btnClearAll" type="button">Clear Filters</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Details modal -->
+  <div class="modal" id="detailsModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close="detailsModal"></div>
+
+    <div class="modal-card glass" role="document" aria-labelledby="detailsTitle">
+      <div class="modal-head">
+        <div>
+          <h3 id="detailsTitle">Purchase Details</h3>
+          <p class="muted" id="detailsSub">—</p>
+        </div>
+        <button class="icon-btn" type="button" aria-label="Close" data-close="detailsModal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-grid">
+          <div class="detail-left glass-soft">
+            <div class="thumb big" id="detailsThumb" aria-hidden="true"></div>
+            <div class="summary">
+              <h4 id="dItem">—</h4>
+              <p class="muted" id="dSeller">—</p>
+              <div class="pill-row" id="dPills"></div>
+            </div>
+          </div>
+
+          <div class="detail-right">
+            <div class="kv">
+              <div class="kv-item"><span class="k">Category</span><span class="v" id="dType">—</span></div>
+              <div class="kv-item"><span class="k">Status</span><span class="v" id="dStatus">—</span></div>
+              <div class="kv-item"><span class="k">Payment</span><span class="v" id="dMethod">—</span></div>
+              <div class="kv-item"><span class="k">Amount</span><span class="v" id="dAmount">—</span></div>
+              <div class="kv-item"><span class="k">Date</span><span class="v" id="dDate">—</span></div>
+              <div class="kv-item"><span class="k">Receipt</span><span class="v" id="dReceipt">—</span></div>
+            </div>
+
+            <div class="box">
+              <h4>Notes</h4>
+              <p class="desc" id="dNotes">—</p>
+            </div>
+
+            <div class="actions" style="margin-top:12px;">
+              <button class="btn btn-ghost" id="btnCloseDetails" type="button">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ✅ Edit Profile modal -->
+  <div class="modal" id="editModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close="editModal"></div>
+
+    <div class="modal-card glass" role="document" aria-labelledby="editTitle">
+      <div class="modal-head">
+        <div>
+          <h3 id="editTitle">Edit Profile</h3>
+          <p class="muted">Update your name or change password</p>
+        </div>
+        <button class="icon-btn" type="button" aria-label="Close" data-close="editModal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="edit-grid">
+          <div class="field span-2">
+            <label for="editName">Full Name</label>
+            <input id="editName" type="text" placeholder="Your name" />
+          </div>
+
+          <div class="field">
+            <label for="oldPass">Old Password</label>
+            <input id="oldPass" type="password" placeholder="Old password" />
+          </div>
+
+          <div class="field">
+            <label for="newPass">New Password</label>
+            <input id="newPass" type="password" placeholder="New password" />
+          </div>
+
+          <div class="field span-2">
+            <label for="newPass2">Confirm New Password</label>
+            <input id="newPass2" type="password" placeholder="Confirm new password" />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-ghost" data-close="editModal" type="button">Cancel</button>
+          <button class="btn btn-primary" id="btnSaveProfile" type="button">Save</button>
+        </div>
+
+        <div class="toast" id="editToast" role="status" aria-live="polite" aria-atomic="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/user_buying_history.js" defer></script>
+</body>
+</html>

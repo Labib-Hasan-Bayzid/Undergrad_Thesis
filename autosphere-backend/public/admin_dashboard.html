@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cloud Admin Dashboard</title>
+
+  <link rel="stylesheet" href="css/admin_dashboard.css" />
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <!-- Topbar -->
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" focusable="false">
+            <defs>
+              <linearGradient id="adg1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="rgba(124,92,255,0.95)"/>
+                <stop offset="1" stop-color="rgba(34,211,238,0.95)"/>
+              </linearGradient>
+            </defs>
+            <path fill="url(#adg1)" d="M32 8c8.8 0 16 7.2 16 16v2.2c4.6 2.5 7.7 7.4 7.7 13.1C55.7 48.5 49.2 55 41.2 55H21.6C13.5 55 7 48.5 7 40.3c0-6.9 4.7-12.8 11.2-14.4C19 15.8 24.9 8 32 8z"/>
+            <path fill="rgba(255,255,255,0.88)" d="M24 36h16v4H24v-4zm0 8h16v4H24v-4zm0-16h16v4H24v-4z"/>
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <h1>Cloud Admin</h1>
+          <p>Overview • Sellers • Subscriptions • Sales • Bookings</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <a class="btn btn-ghost" href="admin_sellers.html">Sellers</a>
+        <a class="btn btn-ghost" href="admin_records.html">Records</a>
+        <a class="btn btn-ghost" href="marketplace.html">Marketplace</a>
+        <a class="btn btn-ghost" href="workshops.html">Workshops</a>
+        <a class="btn btn-ghost" href="http://localhost:5000\index.html">Auto Vault</a>
+        <a class="btn btn-danger" href="login.html" id="btnLogout">Logout</a>
+      </div>
+    </header>
+
+    <!-- KPI Row -->
+    <section class="kpi-grid">
+      <article class="kpi glass">
+        <div class="kpi-head">
+          <div>
+            <p class="kpi-label">Total Users</p>
+            <h2 class="kpi-value" id="kpiUsers">0</h2>
+          </div>
+          <span class="kpi-icon" aria-hidden="true">👤</span>
+        </div>
+        <p class="kpi-sub" id="kpiUsersSub">—</p>
+      </article>
+
+      <article class="kpi glass">
+        <div class="kpi-head">
+          <div>
+            <p class="kpi-label">Verified Sellers</p>
+            <h2 class="kpi-value" id="kpiVerified">0</h2>
+          </div>
+          <span class="kpi-icon" aria-hidden="true">✅</span>
+        </div>
+        <p class="kpi-sub" id="kpiVerifiedSub">—</p>
+      </article>
+
+      <article class="kpi glass">
+        <div class="kpi-head">
+          <div>
+            <p class="kpi-label">Active Listings</p>
+            <h2 class="kpi-value" id="kpiActiveListings">0</h2>
+          </div>
+          <span class="kpi-icon" aria-hidden="true">📌</span>
+        </div>
+        <p class="kpi-sub" id="kpiActiveListingsSub">—</p>
+      </article>
+
+      <article class="kpi glass">
+        <div class="kpi-head">
+          <div>
+            <p class="kpi-label">Payments Recorded</p>
+            <h2 class="kpi-value" id="kpiPayments">0</h2>
+          </div>
+          <span class="kpi-icon" aria-hidden="true">💳</span>
+        </div>
+        <p class="kpi-sub" id="kpiPaymentsSub">—</p>
+      </article>
+    </section>
+
+    <!-- Three Blocks -->
+    <section class="blocks">
+      <!-- Auto Vault -->
+      <article class="block glass">
+        <div class="block-head">
+          <div>
+            <h3>Auto Vault</h3>
+            <p class="muted">Users and subscription activity</p>
+          </div>
+          <div class="block-actions">
+            <a class="btn btn-ghost" href="auto_vault.html">Open</a>
+            <a class="btn btn-primary" href="admin_records.html#subscriptions">Subscriptions</a>
+          </div>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini glass-soft">
+            <p class="mini-label">Active Subscribers</p>
+            <p class="mini-value" id="avActive">0</p>
+          </div>
+          <div class="mini glass-soft">
+            <p class="mini-label">Expired</p>
+            <p class="mini-value" id="avExpired">0</p>
+          </div>
+          <div class="mini glass-soft">
+            <p class="mini-label">Plans</p>
+            <p class="mini-value" id="avPlans">0</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-head">
+            <p class="strong">Recent Subscriptions</p>
+            <button class="btn btn-ghost btn-mini" id="btnRefreshSubs" type="button">Refresh</button>
+          </div>
+
+          <div class="table" role="table" aria-label="Recent subscriptions">
+            <div class="trow thead" role="row">
+              <div class="tcell" role="columnheader">User</div>
+              <div class="tcell" role="columnheader">Plan</div>
+              <div class="tcell" role="columnheader">Status</div>
+              <div class="tcell" role="columnheader">Ends</div>
+            </div>
+            <div id="subsRows"></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Vehicle Marketplace -->
+      <article class="block glass">
+        <div class="block-head">
+          <div>
+            <h3>Vehicle Marketplace</h3>
+            <p class="muted">Sellers, listings, and sold status</p>
+          </div>
+          <div class="block-actions">
+            <a class="btn btn-ghost" href="marketplace.html">Open</a>
+            <a class="btn btn-primary" href="admin_sellers.html#vehicle">Verify Sellers</a>
+          </div>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini glass-soft">
+            <p class="mini-label">Vehicle Sellers</p>
+            <p class="mini-value" id="vmSellers">0</p>
+          </div>
+          <div class="mini glass-soft">
+            <p class="mini-label">Available</p>
+<p class="mini-value" id="vmAvailable">0</p>
+          </div>
+          <div class="mini glass-soft">
+            <p class="mini-label">Sold Vehicles</p>
+            <p class="mini-value" id="vmSold">0</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-head">
+            <p class="strong">Recent Vehicle Sales</p>
+            <button class="btn btn-ghost btn-mini" id="btnRefreshSales" type="button">Refresh</button>
+          </div>
+
+          <div class="table" role="table" aria-label="Recent vehicle sales">
+            <div class="trow thead" role="row">
+              <div class="tcell" role="columnheader">Listing</div>
+              <div class="tcell" role="columnheader">Seller</div>
+              <div class="tcell" role="columnheader">Buyer</div>
+              <div class="tcell" role="columnheader">Status</div>
+            </div>
+            <div id="salesRows"></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Workshops -->
+      <article class="block glass">
+        <div class="block-head">
+          <div>
+            <h3>Workshops</h3>
+            <p class="muted">Providers and customer bookings</p>
+          </div>
+          <div class="block-actions">
+            <a class="btn btn-ghost" href="workshops.html">Open</a>
+            <a class="btn btn-primary" href="admin_sellers.html#workshop">Verify Workshops</a>
+          </div>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini glass-soft">
+            <p class="mini-label">Workshop Sellers</p>
+            <p class="mini-value" id="wsSellers">0</p>
+          </div>
+          <div class="mini glass-soft">
+            <p class="mini-label">Sales</p>
+            <p class="mini-value" id="wsBookings">0</p>
+          </div>
+          <div class="mini glass-soft">
+            <p class="mini-label">Services & Parts</p>
+            <p class="mini-value" id="wsItems">0</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-head">
+            <p class="strong">Recent Sales</p>
+            <button class="btn btn-ghost btn-mini" id="btnRefreshBookings" type="button">Refresh</button>
+          </div>
+
+          <div class="table" role="table" aria-label="Recent bookings">
+            <div class="trow thead" role="row">
+              <div class="tcell" role="columnheader">Service</div>
+              <div class="tcell" role="columnheader">Workshop</div>
+              <div class="tcell" role="columnheader">User</div>
+              <div class="tcell" role="columnheader">Status</div>
+            </div>
+            <div id="bookingRows"></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- System Notes -->
+   
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  </main>
+
+  <script src="js/admin_dashboard.js" defer></script>
+</body>
+</html>

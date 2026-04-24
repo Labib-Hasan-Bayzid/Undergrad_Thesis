@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auto Vault</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- Background -->
+    <div class="bg" aria-hidden="true"></div>
+    <div class="bg-overlay" aria-hidden="true"></div>
+
+    <!-- Shell -->
+    <main class="shell">
+      <section class="card" role="region" aria-label="Authentication">
+        <header class="card-header">
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true">
+              <span class="mark-a"></span>
+              <span class="mark-b"></span>
+            </div>
+            <div class="brand-text">
+              <h1>Auto Vault</h1>
+              <p>Secure access to your vehicle documents</p>
+            </div>
+          </div>
+
+          <nav class="tabs" aria-label="Authentication tabs">
+            <button
+              class="tab is-active"
+              type="button"
+              data-view="login"
+              aria-selected="true"
+            >
+              Login
+            </button>
+            <button
+              class="tab"
+              type="button"
+              data-view="signup"
+              aria-selected="false"
+            >
+              Sign up
+            </button>
+          </nav>
+        </header>
+
+        <div class="card-body">
+          <!-- Alerts -->
+          <div class="alert" id="alert" role="status" aria-live="polite"></div>
+
+          <!-- LOGIN -->
+          <form
+            id="form-login"
+            class="form view is-visible"
+            data-view="login"
+            autocomplete="on"
+            novalidate
+          >
+            <div class="field">
+              <label for="loginEmail">Email</label>
+              <div class="input-wrap">
+                <span class="icon" aria-hidden="true">✉</span>
+                <input
+                  id="loginEmail"
+                  name="email"
+                  type="email"
+                  placeholder="name@email.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="loginPassword">Password</label>
+              <div class="input-wrap">
+                <span class="icon" aria-hidden="true">🔒</span>
+                <input
+                  id="loginPassword"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  required
+                  minlength="6"
+                />
+                <button
+                  class="ghost-btn"
+                  type="button"
+                  data-toggle="password"
+                  aria-label="Show password"
+                >
+                  Show
+                </button>
+              </div>
+            </div>
+
+            <div class="row">
+              <label class="check">
+                <input type="checkbox" id="rememberMe" />
+                <span>Remember me</span>
+              </label>
+
+              <button class="link" type="button" data-open="forgot">
+                Forgot password?
+              </button>
+            </div>
+
+            <button class="btn primary" type="submit">
+              <span>Login</span>
+              <span class="btn-glow" aria-hidden="true"></span>
+            </button>
+
+            <div class="divider">
+              <span></span>
+              <p>or</p>
+              <span></span>
+            </div>
+
+            <button class="btn secondary" type="button" data-switch="signup">
+              Create a new account
+            </button>
+          </form>
+
+          <!-- SIGNUP -->
+          <form
+            id="form-signup"
+            class="form view"
+            data-view="signup"
+            autocomplete="on"
+            novalidate
+          >
+            <div class="grid-2">
+              <div class="field">
+                <label for="fullName">Full name</label>
+                <div class="input-wrap">
+                  <span class="icon" aria-hidden="true">👤</span>
+                  <input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    placeholder="Your name"
+                    required
+                    minlength="2"
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="phone">Phone</label>
+                <div class="input-wrap">
+                  <span class="icon" aria-hidden="true">📱</span>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="01XXXXXXXXX"
+                    inputmode="numeric"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="signupEmail">Email</label>
+              <div class="input-wrap">
+                <span class="icon" aria-hidden="true">✉</span>
+                <input
+                  id="signupEmail"
+                  name="email"
+                  type="email"
+                  placeholder="name@email.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="signupPassword">Create password</label>
+              <div class="input-wrap">
+                <span class="icon" aria-hidden="true">🔒</span>
+                <input
+                  id="signupPassword"
+                  name="password"
+                  type="password"
+                  placeholder="At least 8 characters"
+                  required
+                  minlength="8"
+                />
+                <button
+                  class="ghost-btn"
+                  type="button"
+                  data-toggle="password"
+                  aria-label="Show password"
+                >
+                  Show
+                </button>
+              </div>
+              <p class="hint">
+                Use 8+ characters with a mix of letters and numbers.
+              </p>
+            </div>
+
+            <div class="field">
+              <label for="confirmPassword">Confirm password</label>
+              <div class="input-wrap">
+                <span class="icon" aria-hidden="true">🔒</span>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="Re-enter password"
+                  required
+                  minlength="8"
+                />
+                <button
+                  class="ghost-btn"
+                  type="button"
+                  data-toggle="password"
+                  aria-label="Show password"
+                >
+                  Show
+                </button>
+              </div>
+            </div>
+
+            <label class="check">
+              <input type="checkbox" id="agree" required />
+              <span>I agree to the terms and privacy policy</span>
+            </label>
+
+            <button class="btn primary" type="submit">
+              <span>Create account</span>
+              <span class="btn-glow" aria-hidden="true"></span>
+            </button>
+
+            <button class="btn secondary" type="button" data-switch="login">
+              Already have an account? Login
+            </button>
+          </form>
+
+          <!-- FORGOT PASSWORD (modal) -->
+          <div class="modal" id="forgotModal" aria-hidden="true">
+            <div class="modal-backdrop" data-close="forgot"></div>
+
+            <div
+              class="modal-panel"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="forgotTitle"
+            >
+              <div class="modal-top">
+                <h2 id="forgotTitle">Reset password</h2>
+                <button
+                  class="icon-btn"
+                  type="button"
+                  data-close="forgot"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <!-- STEP 1: Send OTP -->
+              <form id="form-forgot" class="form compact" novalidate>
+                <div class="field">
+                  <label for="forgotEmail">Email</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">✉</span>
+                    <input
+                      id="forgotEmail"
+                      name="email"
+                      type="email"
+                      placeholder="name@email.com"
+                      required
+                    />
+                  </div>
+                  <p class="hint">We will send a 6-digit OTP to this email.</p>
+                </div>
+
+                <button class="btn primary" type="submit">
+                  <span>Send OTP</span>
+                  <span class="btn-glow" aria-hidden="true"></span>
+                </button>
+
+                <button class="btn secondary" type="button" data-close="forgot">
+                  Back
+                </button>
+              </form>
+
+              <!-- STEP 2: Verify OTP + set new password -->
+              <form id="form-reset" class="form compact hidden" novalidate>
+                <div class="field">
+                  <label for="resetOtp">OTP Code</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">🔐</span>
+                    <input
+                      type="text"
+                      id="resetOtp"
+                      inputmode="numeric"
+                      maxlength="6"
+                      placeholder="Enter 6-digit OTP"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="resetNewPassword">New Password</label>
+                  <div class="input-wrap">
+                    <span class="icon" aria-hidden="true">🔒</span>
+                    <input
+                      type="password"
+                      id="resetNewPassword"
+                      placeholder="Enter new password"
+                      required
+                      minlength="8"
+                    />
+                  </div>
+                </div>
+
+                <button class="btn primary" type="submit">
+                  <span>Reset Password</span>
+                  <span class="btn-glow" aria-hidden="true"></span>
+                </button>
+
+                <button class="btn secondary" type="button" data-close="forgot">
+                  Back
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <footer class="card-footer">
+          <div class="mini">
+            <span class="dot"></span>
+            <span>Session secured</span>
+          </div>
+          <div class="mini">
+            <span class="dot"></span>
+            <span>Encrypted storage</span>
+          </div>
+        </footer>
+      </section>
+
+      <aside class="side">
+        <div class="side-card">
+          <h2>Protect identity and vehicle records</h2>
+          <p>
+            Store vehicle documents and sensitive details with structured access
+            and clear security status.
+          </p>
+          <ul class="side-list">
+            <li>
+              <span class="bullet"></span>Uploads for photos and documents
+            </li>
+            <li><span class="bullet"></span>Masked sensitive fields</li>
+            <li><span class="bullet"></span>Access history tracking</li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>

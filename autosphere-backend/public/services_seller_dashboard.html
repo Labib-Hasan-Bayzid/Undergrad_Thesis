@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Services Seller Dashboard</title>
+
+  <!-- MUST: correct path -->
+  <link rel="stylesheet" href="css/services_seller_dashboard.css" />
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <!-- Topbar -->
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 72 72" role="img" focusable="false">
+            <defs>
+              <linearGradient id="lgS" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#7C5CFF"/>
+                <stop offset="1" stop-color="#22D3EE"/>
+              </linearGradient>
+              <filter id="glowS" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="3" result="b"/>
+                <feColorMatrix in="b" type="matrix"
+                  values="1 0 0 0 0
+                          0 1 0 0 0
+                          0 0 1 0 0
+                          0 0 0 0.35 0" result="g"/>
+                <feMerge>
+                  <feMergeNode in="g"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <rect x="8" y="8" width="56" height="56" rx="18" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.14)"/>
+            <path d="M45 18a10 10 0 0 0-8 4l5 5-8 8-5-5a10 10 0 0 0 4 8l3-3 7 7-3 3a10 10 0 0 0 8-4l-5-5 8-8 5 5a10 10 0 0 0-4-8l-3 3-7-7 3-3Z"
+              fill="url(#lgS)" filter="url(#glowS)"/>
+            <circle cx="26" cy="48" r="6" fill="rgba(255,255,255,0.86)"/>
+            <circle cx="26" cy="48" r="2.2" fill="rgba(0,0,0,0.28)"/>
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <h1>Services Seller Dashboard</h1>
+          <p>Manage services & parts • Track status • Payments</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn btn-ghost" id="btnEditProfile" type="button">Edit Profile</button>
+
+        <a class="btn btn-ghost" href="marketplace.html">Marketplace</a>
+        <a class="btn btn-ghost" href="http://localhost:5000\index.html">Auto Vault</a>
+        <a class="btn btn-ghost" href="workshops.html">Workshops</a>
+        <a class="btn btn-danger" href="login.html" id="btnLogout">Logout</a>
+      </div>
+    </header>
+
+    <!-- Seller Card -->
+    <section class="seller glass">
+      <div class="seller-left">
+        <div class="avatar" aria-hidden="true">
+          <span class="dot"></span>
+          <span class="ring"></span>
+        </div>
+
+        <div class="seller-meta">
+          <div class="row">
+            <h2 id="sellerName">Loading...</h2>
+            <span class="badge" id="sellerBadge">Service Provider</span>
+          </div>
+
+          <p class="sub" id="sellerAbout">—</p>
+
+          <div class="seller-kv">
+            <div class="kv">
+              <span class="k">Phone</span>
+              <span class="v" id="sellerPhone">—</span>
+            </div>
+            <div class="kv">
+              <span class="k">Location</span>
+              <span class="v" id="sellerLocation">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="seller-right">
+        <div class="stat">
+          <div class="n" id="statActive">0</div>
+          <div class="t">Active</div>
+        </div>
+       
+        <div class="stat">
+          <div class="n" id="statHidden">0</div>
+          <div class="t">Hidden</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add Listing -->
+    <section class="add glass">
+      <div class="section-head">
+        <div>
+          <h3>Add Listing</h3>
+          <p class="muted">Choose category and add details.</p>
+        </div>
+
+        <div class="mini-actions">
+          <button class="btn btn-ghost" type="button" id="btnResetForm">Clear</button>
+          <button class="btn btn-primary" type="button" id="btnSaveListing">Save Listing</button>
+        </div>
+      </div>
+
+      <!-- Category tabs -->
+      <div class="tabs-wrap">
+        <div class="tabs" role="tablist" aria-label="Listing category">
+          <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="service">Service</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="part">Spare Parts</button>
+        </div>
+      </div>
+
+      <!-- Service form -->
+      <div class="panel is-active" id="panel-service" role="tabpanel">
+        <div class="form-grid">
+          <div class="field">
+            <label for="svcTitle">Service Title</label>
+            <input id="svcTitle" type="text" placeholder="e.g., Engine Oil Change" />
+          </div>
+
+          <div class="field">
+            <label for="svcType">Service Type</label>
+            <select id="svcType">
+              <option value="maintenance">Maintenance</option>
+              <option value="repair">Repair</option>
+              <option value="diagnostics">Diagnostics</option>
+              <option value="detailing">Detailing</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="svcVehicle">Vehicle Support</label>
+            <select id="svcVehicle">
+              <option value="car">Car</option>
+              <option value="bike">Bike</option>
+              <option value="both">Car & Bike</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="svcPrice">Price (BDT)</label>
+            <input id="svcPrice" type="number" min="0" placeholder="e.g., 1200" />
+          </div>
+
+          <div class="field">
+            <label for="svcCity">City</label>
+            <select id="svcCity">
+              <option value="Dhaka">Dhaka</option>
+              <option value="Chattogram">Chattogram</option>
+              <option value="Sylhet">Sylhet</option>
+              <option value="Rajshahi">Rajshahi</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="svcPhone">Phone</label>
+            <input id="svcPhone" type="tel" placeholder="e.g., +8801XXXXXXXXX" />
+          </div>
+
+          <div class="field span-2">
+            <label for="svcLocation">Address / Area</label>
+            <input id="svcLocation" type="text" placeholder="e.g., Mirpur, Dhaka" />
+          </div>
+
+          <div class="field span-2">
+            <label for="svcDesc">Description</label>
+            <textarea id="svcDesc" rows="3" placeholder="Write a short, clear description..."></textarea>
+          </div>
+
+          <div class="field span-2">
+            <label for="svcImages">Images</label>
+            <input id="svcImages" type="file" accept="image/*" multiple />
+            <div class="hint">You can select multiple images.</div>
+            <div class="thumbs" id="svcThumbs"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parts form -->
+      <div class="panel" id="panel-part" role="tabpanel" hidden>
+        <div class="form-grid">
+          <div class="field">
+            <label for="partTitle">Part Name</label>
+            <input id="partTitle" type="text" placeholder="e.g., Brake Pad Set" />
+          </div>
+
+          <div class="field">
+            <label for="partCategory">Category</label>
+            <select id="partCategory">
+              <option value="engine">Engine</option>
+              <option value="brakes">Brakes</option>
+              <option value="suspension">Suspension</option>
+              <option value="electrical">Electrical</option>
+              <option value="body">Body</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="partVehicle">Vehicle Type</label>
+            <select id="partVehicle">
+              <option value="car">Car</option>
+              <option value="bike">Bike</option>
+              <option value="both">Car & Bike</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="partPrice">Price (BDT)</label>
+            <input id="partPrice" type="number" min="0" placeholder="e.g., 3500" />
+          </div>
+
+          <div class="field">
+            <label for="partStock">Stock</label>
+            <input id="partStock" type="number" min="0" placeholder="e.g., 25" />
+          </div>
+
+          <div class="field">
+            <label for="partCondition">Condition</label>
+            <select id="partCondition">
+              <option value="new">New</option>
+              <option value="used">Used</option>
+              <option value="refurbished">Refurbished</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="partCity">City</label>
+            <select id="partCity">
+              <option value="Dhaka">Dhaka</option>
+              <option value="Chattogram">Chattogram</option>
+              <option value="Sylhet">Sylhet</option>
+              <option value="Rajshahi">Rajshahi</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="partPhone">Phone</label>
+            <input id="partPhone" type="tel" placeholder="e.g., +8801XXXXXXXXX" />
+          </div>
+
+          <div class="field span-2">
+            <label for="partLocation">Address / Area</label>
+            <input id="partLocation" type="text" placeholder="e.g., Tejgaon, Dhaka" />
+          </div>
+
+          <div class="field span-2">
+            <label for="partDesc">Description</label>
+            <textarea id="partDesc" rows="3" placeholder="Write a short, clear description..."></textarea>
+          </div>
+
+          <div class="field span-2">
+            <label for="partImages">Images</label>
+            <input id="partImages" type="file" accept="image/*" multiple />
+            <div class="hint">You can select multiple images.</div>
+            <div class="thumbs" id="partThumbs"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- My Listings -->
+    <section class="listings glass">
+      <div class="section-head">
+        <div>
+          <h3>My Listings</h3>
+          <p class="muted" id="myCount">0 items</p>
+        </div>
+
+        <div class="controls">
+          <div class="search">
+            <span class="icon" aria-hidden="true">⌕</span>
+            <input id="mySearch" type="text" placeholder="Search my listings..." autocomplete="off" />
+            <button class="btn btn-ghost" type="button" id="btnClearMySearch">Clear</button>
+          </div>
+
+          <div class="mini-filters">
+            <div class="field">
+              <label for="catFilter">Category</label>
+              <select id="catFilter">
+                <option value="all">All</option>
+                <option value="service">Service</option>
+                <option value="part">Spare Parts</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="statusFilter">Status</label>
+              <select id="statusFilter">
+                <option value="all">All</option>
+                <option value="available">Active</option>
+                <option value="sold">Completed</option>
+                <option value="hidden">Hidden</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="mySort">Sort</label>
+              <select id="mySort">
+                <option value="latest">Latest</option>
+                <option value="priceLow">Price: Low → High</option>
+                <option value="priceHigh">Price: High → Low</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips" id="myChips"></div>
+      <div class="grid" id="myGrid"></div>
+
+      <div class="empty glass-soft" id="myEmpty" hidden>
+        <h4>No listings found</h4>
+        <p class="muted">Add a listing or adjust filters.</p>
+        <button class="btn btn-primary" type="button" id="btnClearMyFilters">Clear Filters</button>
+      </div>
+    </section>
+
+    <!-- Payments -->
+    <section class="payments glass">
+      <div class="section-head">
+        <div>
+          <h3>Payments</h3>
+          <p class="muted" id="payCount">0 records</p>
+        </div>
+
+        <div class="mini-filters">
+          <div class="field">
+            <label for="methodFilter">Method</label>
+            <select id="methodFilter">
+              <option value="all">All</option>
+              <option value="bkash">bKash</option>
+              <option value="card">Card</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table" aria-label="Payments table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Amount</th>
+              <th>Method</th>
+              <th>Reference</th>
+              <th>Date</th>
+            
+            </tr>
+          </thead>
+          <tbody id="payTbody"></tbody>
+        </table>
+      </div>
+
+      <div class="empty glass-soft" id="payEmpty" hidden>
+        <h4>No payment records</h4>
+        <p class="muted">Payments will appear here.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- MUST: correct path -->
+  <script src="js/services_seller_dashboard.js" defer></script>
+</body>
+</html>
